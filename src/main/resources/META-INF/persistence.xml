@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="phonebook-pu" transaction-type="JTA">
+        <description>Phone Book Application Persistence Unit</description>
+        
+        <!-- JPA Provider (Hibernate is default in WildFly) -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <!-- JTA Data Source (will be configured in WildFly) -->
+        <jta-data-source>java:jboss/datasources/PhonebookDS</jta-data-source>
+        
+        <!-- Entity Classes -->
+        <class>com.phonebook.entity.Contact</class>
+        
+        <!-- Exclude unlisted classes to avoid scanning issues -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        
+        <properties>
+            <!-- Hibernate Dialect for H2 Database -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            
+            <!-- Schema Generation Strategy -->
+            <!-- Use 'create-drop' for development, 'update' for production -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            
+            <!-- Show SQL statements in logs for debugging -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            
+            <!-- Connection Pool Settings -->
+            <property name="hibernate.connection.pool_size" value="10"/>
+            
+            <!-- Enable second-level cache (optional) -->
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.cache.use_query_cache" value="false"/>
+            
+            <!-- Database Schema Validation -->
+            <property name="hibernate.validator.apply_to_ddl" value="true"/>
+            
+            <!-- Transaction Settings -->
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
+            
+            <!-- Naming Strategy -->
+            <property name="hibernate.physical_naming_strategy" value="org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"/>
+            
+            <!-- JDBC Settings for H2 -->
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:~/phonebook;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            
+            <!-- H2 Specific Settings -->
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <property name="hibernate.connection.isolation" value="2"/>
+        </properties>
+    </persistence-unit>
+</persistence>
