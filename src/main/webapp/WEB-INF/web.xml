@@ -24,15 +24,38 @@
         <param-value>true</param-value>
     </context-param>
 
-    <!-- ICEfaces Configuration -->
+    <!-- ICEfaces Configuration Parameters -->
     <context-param>
         <param-name>org.icefaces.ace.theme</param-name>
-        <param-value>sam</param-value>
+        <param-value>rime</param-value>
+    </context-param>
+    
+    <!-- ICEfaces ACE Components Configuration -->
+    <context-param>
+        <param-name>org.icefaces.mandatoryResourceConfiguration</param-name>
+        <param-value>all</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>org.icefaces.compressResources</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    
+    <!-- Force ICEfaces ACE component loading -->
+    <context-param>
+        <param-name>org.icefaces.ace.component.loadAll</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <!-- ICEfaces Resource Loading -->
+    <context-param>
+        <param-name>org.icefaces.coalesceResources</param-name>
+        <param-value>false</param-value>
     </context-param>
 
     <context-param>
         <param-name>org.icefaces.ace.combinedResourceMode</param-name>
-        <param-value>true</param-value>
+        <param-value>false</param-value>
     </context-param>
 
     <context-param>
@@ -43,6 +66,18 @@
     <context-param>
         <param-name>org.icefaces.sessionExpiredRedirectURI</param-name>
         <param-value>/contacts.xhtml</param-value>
+    </context-param>
+
+    <!-- Enable ICEfaces ACE components -->
+    <context-param>
+        <param-name>org.icefaces.ace.enabled</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <!-- ICEfaces Resource Servlet Configuration -->
+    <context-param>
+        <param-name>org.icefaces.resourceRootPath</param-name>
+        <param-value>/</param-value>
     </context-param>
 
     <!-- Resource handling configuration -->
@@ -62,6 +97,8 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    
+
 
     <!-- Welcome file configuration -->
     <welcome-file-list>

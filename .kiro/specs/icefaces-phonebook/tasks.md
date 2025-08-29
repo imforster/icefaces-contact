@@ -100,7 +100,7 @@
   - Verify proper CDI injection and JSF navigation flows
   - _Requirements: 1.1, 2.2, 3.2, 4.2, 5.1, 7.1, 7.2_
 
-- [ ] 15. Configure application for WildFly deployment
+- [x] 15. Configure application for WildFly deployment
   - Create WildFly-specific configuration files and datasource setup
   - Package application as WAR file with all required ICEfaces dependencies
   - Test deployment on WildFly server with Java 8 runtime

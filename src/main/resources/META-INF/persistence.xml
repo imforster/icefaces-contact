@@ -25,15 +25,12 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             
             <!-- Schema Generation Strategy -->
-            <!-- Use 'create-drop' for development, 'update' for production -->
+            <!-- Use 'update' for production deployment to preserve data -->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             
-            <!-- Show SQL statements in logs for debugging -->
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            
-            <!-- Connection Pool Settings -->
-            <property name="hibernate.connection.pool_size" value="10"/>
+            <!-- Show SQL statements in logs for debugging (disable in production) -->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
             
             <!-- Enable second-level cache (optional) -->
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
@@ -42,21 +39,22 @@
             <!-- Database Schema Validation -->
             <property name="hibernate.validator.apply_to_ddl" value="true"/>
             
-            <!-- Transaction Settings -->
+            <!-- Transaction Settings for WildFly -->
             <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
             
             <!-- Naming Strategy -->
             <property name="hibernate.physical_naming_strategy" value="org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"/>
             
-            <!-- JDBC Settings for H2 -->
-            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:h2:~/phonebook;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"/>
-            <property name="hibernate.connection.username" value="sa"/>
-            <property name="hibernate.connection.password" value=""/>
+            <!-- WildFly specific settings -->
+            <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
             
-            <!-- H2 Specific Settings -->
-            <property name="hibernate.connection.autocommit" value="false"/>
-            <property name="hibernate.connection.isolation" value="2"/>
+            <!-- Connection pool is managed by WildFly datasource -->
+            <property name="hibernate.connection.provider_disables_autocommit" value="true"/>
+            
+            <!-- Schema generation for first startup -->
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial-data.sql"/>
         </properties>
     </persistence-unit>
 </persistence>

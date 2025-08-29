@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.3">
+    <deployment>
+        <!-- Define module dependencies -->
+        <dependencies>
+            <!-- H2 Database Driver Module -->
+            <module name="com.h2database.h2" />
+            
+            <!-- JSF API and Implementation (already provided by WildFly) -->
+            <module name="javax.faces.api" />
+            <module name="com.sun.jsf-impl" />
+            
+            <!-- JPA API (already provided by WildFly) -->
+            <module name="javax.persistence.api" />
+            
+            <!-- CDI API (already provided by WildFly) -->
+            <module name="javax.enterprise.api" />
+            
+            <!-- Bean Validation API (already provided by WildFly) -->
+            <module name="javax.validation.api" />
+            
+            <!-- Logging (already provided by WildFly) -->
+            <module name="org.jboss.logging" />
+            
+            <!-- EL API for expression language -->
+            <module name="javax.el.api" />
+        </dependencies>
+        
+        <!-- Exclude conflicting modules to avoid classloader issues -->
+        <exclusions>
+            <!-- Exclude older JSF versions if any -->
+            <module name="org.apache.myfaces.core.api" />
+            <module name="org.apache.myfaces.core.impl" />
+        </exclusions>
+        
+        <!-- Local resources take precedence over module resources -->
+        <local-last value="false"/>
+    </deployment>
+</jboss-deployment-structure>

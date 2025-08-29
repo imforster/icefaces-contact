@@ -339,7 +339,11 @@ public class JSFNavigationIntegrationTest {
         // For integration testing, we'll test with invalid data scenarios
 
         // Test with extremely long name (beyond database constraints)
-        String longName = "A".repeat(200); // Assuming max length is 100
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 200; i++) {
+            sb.append("A");
+        }
+        String longName = sb.toString(); // Assuming max length is 100
         Contact newContact = contactBean.getNewContact();
         newContact.setName(longName);
         newContact.setPhoneNumber("555-1234");

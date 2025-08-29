@@ -115,7 +115,7 @@ public class ContactBean implements Serializable {
      * Action method to hide the add contact form.
      */
     public void hideAddContactForm() {
-        LOGGER.info("Hiding add contact form");
+        LOGGER.info("=== HIDE ADD CONTACT FORM METHOD CALLED ===");
         showAddForm = false;
         newContact = new Contact();
     }
@@ -126,16 +126,17 @@ public class ContactBean implements Serializable {
      */
     public void addContact() {
         try {
-            LOGGER.info("Adding new contact: " + newContact.getName());
+            LOGGER.info("=== ADD CONTACT METHOD CALLED ===");
+            LOGGER.info("Adding new contact: " + (newContact != null ? newContact.getName() : "NULL"));
             
             if (newContact.getName() == null || newContact.getName().trim().isEmpty()) {
                 addErrorMessage("Validation Error", "Contact name is required.");
-                return;
+                return; // Keep dialog open for validation errors
             }
             
             if (newContact.getPhoneNumber() == null || newContact.getPhoneNumber().trim().isEmpty()) {
                 addErrorMessage("Validation Error", "Phone number is required.");
-                return;
+                return; // Keep dialog open for validation errors
             }
 
             Contact savedContact = contactService.saveContact(newContact);
@@ -145,20 +146,25 @@ public class ContactBean implements Serializable {
             loadAllContacts();
             applySearchFilter();
             newContact = new Contact();
-            showAddForm = false;
+            showAddForm = false; // Only close dialog on successful save
             
             addInfoMessage("Success", "Contact '" + savedContact.getName() + "' has been added successfully.");
             
         } catch (ContactValidationException e) {
             exceptionHandler.handleContactValidationException(e);
+            // Keep dialog open for validation errors
         } catch (ConstraintViolationException e) {
             exceptionHandler.handleValidationException(e);
+            // Keep dialog open for validation errors
         } catch (ContactServiceException e) {
             exceptionHandler.handleContactServiceException(e);
+            // Keep dialog open for service errors
         } catch (PersistenceException e) {
             exceptionHandler.handleDatabaseException(e);
+            // Keep dialog open for database errors
         } catch (Exception e) {
             exceptionHandler.handleGenericException(e);
+            // Keep dialog open for unexpected errors
         }
     }
 
@@ -206,12 +212,12 @@ public class ContactBean implements Serializable {
             
             if (selectedContact.getName() == null || selectedContact.getName().trim().isEmpty()) {
                 addErrorMessage("Validation Error", "Contact name is required.");
-                return;
+                return; // Keep dialog open for validation errors
             }
             
             if (selectedContact.getPhoneNumber() == null || selectedContact.getPhoneNumber().trim().isEmpty()) {
                 addErrorMessage("Validation Error", "Phone number is required.");
-                return;
+                return; // Keep dialog open for validation errors
             }
 
             Contact updatedContact = contactService.updateContact(selectedContact);
@@ -221,7 +227,7 @@ public class ContactBean implements Serializable {
             loadAllContacts();
             applySearchFilter();
             selectedContact = new Contact();
-            showEditForm = false;
+            showEditForm = false; // Only close dialog on successful update
             
             addInfoMessage("Success", "Contact '" + updatedContact.getName() + "' has been updated successfully.");
             
@@ -229,17 +235,22 @@ public class ContactBean implements Serializable {
             exceptionHandler.handleContactNotFoundException(e);
             loadAllContacts();
             applySearchFilter();
-            showEditForm = false;
+            showEditForm = false; // Close dialog if contact not found
         } catch (ContactValidationException e) {
             exceptionHandler.handleContactValidationException(e);
+            // Keep dialog open for validation errors
         } catch (ConstraintViolationException e) {
             exceptionHandler.handleValidationException(e);
+            // Keep dialog open for validation errors
         } catch (ContactServiceException e) {
             exceptionHandler.handleContactServiceException(e);
+            // Keep dialog open for service errors
         } catch (PersistenceException e) {
             exceptionHandler.handleDatabaseException(e);
+            // Keep dialog open for database errors
         } catch (Exception e) {
             exceptionHandler.handleGenericException(e);
+            // Keep dialog open for unexpected errors
         }
     }
 
