@@ -61,7 +61,7 @@
   - Write integration tests for add contact workflow
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 10. Implement edit contact functionality
+- [x] 10. Implement edit contact functionality
   - Add edit buttons to contact list with action methods to populate edit form
   - Create edit contact dialog with pre-populated form fields
   - Implement update action method with proper validation and error handling
@@ -69,7 +69,7 @@
   - Write integration tests for edit contact workflow
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 11. Implement delete contact functionality
+- [x] 11. Implement delete contact functionality
   - Add delete buttons to contact list with confirmation dialog
   - Create confirmation dialog using ace:confirmDialog component
   - Implement delete action method with proper error handling

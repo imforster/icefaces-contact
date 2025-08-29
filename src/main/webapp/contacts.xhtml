@@ -231,26 +231,47 @@
                     <div class="dialog-content">
                         <h:panelGrid columns="2" styleClass="form-grid">
                             <h:outputLabel for="editName" value="#{msg['label.name']}:" styleClass="required"/>
-                            <ace:textEntry id="editName" 
-                                          value="#{contactBean.selectedContact.name}"
-                                          required="true"
-                                          requiredMessage="#{msg['validation.name.required']}"
-                                          maxlength="100"
-                                          styleClass="form-input"/>
+                            <h:panelGroup>
+                                <ace:textEntry id="editName" 
+                                              value="#{contactBean.selectedContact.name}"
+                                              required="true"
+                                              requiredMessage="#{msg['validation.name.required']}"
+                                              maxlength="100"
+                                              styleClass="form-input"
+                                              placeholder="Enter contact name">
+                                    <f:validateLength minimum="1" maximum="100"/>
+                                </ace:textEntry>
+                                <h:message for="editName" styleClass="validation-message"/>
+                            </h:panelGroup>
                             
                             <h:outputLabel for="editPhone" value="#{msg['label.phone']}:" styleClass="required"/>
-                            <ace:textEntry id="editPhone" 
-                                          value="#{contactBean.selectedContact.phoneNumber}"
-                                          required="true"
-                                          requiredMessage="#{msg['validation.phone.required']}"
-                                          maxlength="20"
-                                          styleClass="form-input"/>
+                            <h:panelGroup>
+                                <ace:textEntry id="editPhone" 
+                                              value="#{contactBean.selectedContact.phoneNumber}"
+                                              required="true"
+                                              requiredMessage="#{msg['validation.phone.required']}"
+                                              maxlength="20"
+                                              styleClass="form-input"
+                                              placeholder="Enter phone number">
+                                    <f:validateLength minimum="1" maximum="20"/>
+                                    <f:validateRegex pattern="^[\d\-\+\(\)\s]+$" 
+                                                    validatorMessage="#{msg['validation.phone.invalid']}"/>
+                                </ace:textEntry>
+                                <h:message for="editPhone" styleClass="validation-message"/>
+                            </h:panelGroup>
                             
                             <h:outputLabel for="editEmail" value="#{msg['label.email']}:"/>
-                            <ace:textEntry id="editEmail" 
-                                          value="#{contactBean.selectedContact.email}"
-                                          maxlength="100"
-                                          styleClass="form-input"/>
+                            <h:panelGroup>
+                                <ace:textEntry id="editEmail" 
+                                              value="#{contactBean.selectedContact.email}"
+                                              maxlength="100"
+                                              styleClass="form-input"
+                                              placeholder="Enter email address (optional)">
+                                    <f:validateRegex pattern="^$|^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})$" 
+                                                    validatorMessage="#{msg['validation.email.invalid']}"/>
+                                </ace:textEntry>
+                                <h:message for="editEmail" styleClass="validation-message"/>
+                            </h:panelGroup>
                         </h:panelGrid>
                         
                         <div class="dialog-buttons" style="margin-top: 20px; text-align: right;">
@@ -274,16 +295,17 @@
             </ace:dialog>
 
             <!-- Delete Confirmation Dialog -->
-            <ace:dialog id="deleteConfirmDialog"
-                       header="Confirm Delete"
-                       visible="#{contactBean.showDeleteConfirmation}"
-                       modal="true"
-                       closable="true"
-                       width="350"
-                       height="200">
+            <ace:confirmDialog id="deleteConfirmDialog"
+                              header="Confirm Delete"
+                              visible="#{contactBean.showDeleteConfirmation}"
+                              modal="true"
+                              closable="true"
+                              width="400"
+                              height="200"
+                              message="#{msg['message.confirm.delete']}"
+                              severity="warn">
                 <h:form id="deleteForm">
                     <div class="dialog-content" style="text-align: center;">
-                        <p>#{msg['message.confirm.delete']}</p>
                         <h:outputText value="Contact: #{contactBean.selectedContact.name}" 
                                      style="font-weight: bold; display: block; margin-bottom: 15px;"/>
                         
@@ -305,7 +327,7 @@
                         </div>
                     </div>
                 </h:form>
-            </ace:dialog>
+            </ace:confirmDialog>
 
         </div>
     </f:view>
