@@ -17,21 +17,7 @@
             <base-name>messages</base-name>
             <var>msg</var>
         </resource-bundle>
-        
-        <!-- Navigation handler for ICEfaces -->
-        <navigation-handler>org.icefaces.impl.application.NavigationHandler</navigation-handler>
-        
-        <!-- State manager for ICEfaces -->
-        <state-manager>org.icefaces.impl.application.StateManagerImpl</state-manager>
     </application>
-
-    <!-- Factory Configuration for ICEfaces -->
-    <factory>
-        <application-factory>org.icefaces.impl.application.ApplicationFactoryImpl</application-factory>
-        <faces-context-factory>org.icefaces.impl.context.FacesContextFactoryImpl</faces-context-factory>
-        <lifecycle-factory>org.icefaces.impl.lifecycle.LifecycleFactoryImpl</lifecycle-factory>
-        <render-kit-factory>org.icefaces.impl.renderkit.RenderKitFactoryImpl</render-kit-factory>
-    </factory>
 
     <!-- Navigation Rules -->
     <navigation-rule>
@@ -51,41 +37,5 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-
-    <!-- Error handling navigation -->
-    <navigation-rule>
-        <navigation-case>
-            <from-outcome>error</from-outcome>
-            <to-view-id>/error.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-
-    <!-- Lifecycle configuration -->
-    <lifecycle>
-        <phase-listener>org.icefaces.impl.event.PhaseListener</phase-listener>
-    </lifecycle>
-
-    <!-- Render kit configuration for ICEfaces ACE components -->
-    <render-kit>
-        <render-kit-id>HTML_BASIC</render-kit-id>
-        <render-kit-class>org.icefaces.ace.renderkit.CoreRenderer</render-kit-class>
-    </render-kit>
-
-    <!-- Validator configuration -->
-    <validator>
-        <validator-id>phoneValidator</validator-id>
-        <validator-class>com.phonebook.validator.PhoneValidator</validator-class>
-    </validator>
-
-    <validator>
-        <validator-id>emailValidator</validator-id>
-        <validator-class>com.phonebook.validator.EmailValidator</validator-class>
-    </validator>
-
-    <!-- Converter configuration -->
-    <converter>
-        <converter-id>contactConverter</converter-id>
-        <converter-class>com.phonebook.converter.ContactConverter</converter-class>
-    </converter>
 
 </faces-config>

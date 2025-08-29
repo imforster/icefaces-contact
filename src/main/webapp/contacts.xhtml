@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+
+<h:head>
+    <title>#{msg['contacts.title']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <h:outputStylesheet library="css" name="phonebook.css"/>
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/xmlhttp/css/rime/rime.css"/>
+</h:head>
+
+<h:body>
+    <f:view>
+        <div class="container">
+            <!-- Header Section -->
+            <div class="header">
+                <h1>#{msg['contacts.title']}</h1>
+                <p>Manage your personal contacts with ease</p>
+            </div>
+
+            <!-- Messages Display -->
+            <h:messages id="messages" 
+                       globalOnly="true" 
+                       showDetail="true"
+                       showSummary="true"
+                       styleClass="messages"
+                       errorClass="message error"
+                       infoClass="message info"
+                       warnClass="message warning"/>
+
+            <!-- Search and Add Contact Section -->
+            <h:form id="searchForm">
+                <div class="search-container">
+                    <h:panelGrid columns="3" styleClass="search-panel">
+                        <h:outputLabel for="searchInput" value="#{msg['label.search']}:" styleClass="search-label"/>
+                        <ace:textEntry id="searchInput" 
+                                      value="#{contactBean.searchTerm}"
+                                      placeholder="Enter name to search..."
+                                      styleClass="search-input">
+                            <ace:ajax event="valueChange" 
+                                     listener="#{contactBean.searchContacts}"
+                                     execute="@this"
+                                     render="contactsTable contactCount"/>
+                        </ace:textEntry>
+                        <h:panelGroup>
+                            <ace:pushButton id="clearSearchBtn"
+                                           value="#{msg['button.clear']}"
+                                           actionListener="#{contactBean.clearSearch}"
+                                           styleClass="button secondary"
+                                           rendered="#{contactBean.searchActive}">
+                                <ace:ajax execute="@this" render="searchInput contactsTable contactCount"/>
+                            </ace:pushButton>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </div>
+            </h:form>
+
+            <!-- Add Contact Button -->
+            <h:form id="addContactForm">
+                <div style="margin-bottom: 20px;">
+                    <ace:pushButton id="addContactBtn"
+                                   value="#{msg['button.add']}"
+                                   actionListener="#{contactBean.showAddContactForm}"
+                                   styleClass="button">
+                        <ace:ajax execute="@this" render="addContactDialog"/>
+                    </ace:pushButton>
+                    
+                    <!-- Contact Count Display -->
+                    <h:outputText id="contactCount" 
+                                 value="Showing #{contactBean.contactCount} contact(s)"
+                                 styleClass="contact-count"
+                                 style="margin-left: 20px; color: #666; font-style: italic;"/>
+                </div>
+            </h:form>
+
+            <!-- Contacts Data Table -->
+            <h:form id="contactsForm">
+                <ace:dataTable id="contactsTable"
+                              value="#{contactBean.filteredContacts}"
+                              var="contact"
+                              rows="10"
+                              paginator="true"
+                              paginatorPosition="bottom"
+                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                              rowsPerPageTemplate="5,10,15,20"
+                              emptyMessage="#{contactBean.searchActive ? msg['message.no.matches'] : msg['message.no.contacts']}"
+                              styleClass="contacts-table"
+                              rowStyleClass="contact-row">
+                    
+                    <!-- Name Column -->
+                    <ace:column headerText="#{msg['label.name']}" sortBy="#{contact.name}">
+                        <h:outputText value="#{contact.name}" styleClass="contact-name"/>
+                    </ace:column>
+                    
+                    <!-- Phone Number Column -->
+                    <ace:column headerText="#{msg['label.phone']}" sortBy="#{contact.phoneNumber}">
+                        <h:outputText value="#{contact.phoneNumber}" styleClass="contact-phone"/>
+                    </ace:column>
+                    
+                    <!-- Email Column -->
+                    <ace:column headerText="#{msg['label.email']}" sortBy="#{contact.email}">
+                        <h:outputText value="#{contact.email}" 
+                                     styleClass="contact-email"
+                                     rendered="#{not empty contact.email}"/>
+                        <h:outputText value="-" 
+                                     styleClass="contact-email-empty"
+                                     rendered="#{empty contact.email}"/>
+                    </ace:column>
+                    
+                    <!-- Actions Column -->
+                    <ace:column headerText="#{msg['label.actions']}" sortable="false">
+                        <h:panelGroup styleClass="action-buttons">
+                            <ace:pushButton value="#{msg['button.edit']}"
+                                           actionListener="#{contactBean.showEditContactForm(contact)}"
+                                           styleClass="button secondary"
+                                           style="margin-right: 5px;">
+                                <ace:ajax execute="@this" render="editContactDialog"/>
+                            </ace:pushButton>
+                            
+                            <ace:pushButton value="#{msg['button.delete']}"
+                                           actionListener="#{contactBean.showDeleteConfirmation(contact)}"
+                                           styleClass="button danger">
+                                <ace:ajax execute="@this" render="deleteConfirmDialog"/>
+                            </ace:pushButton>
+                        </h:panelGroup>
+                    </ace:column>
+                </ace:dataTable>
+            </h:form>
+
+            <!-- Add Contact Dialog -->
+            <ace:dialog id="addContactDialog"
+                       header="Add New Contact"
+                       visible="#{contactBean.showAddForm}"
+                       modal="true"
+                       resizable="false"
+                       closable="true"
+                       width="400"
+                       height="300">
+                <h:form id="addForm">
+                    <div class="dialog-content">
+                        <h:panelGrid columns="2" styleClass="form-grid">
+                            <h:outputLabel for="addName" value="#{msg['label.name']}:" styleClass="required"/>
+                            <ace:textEntry id="addName" 
+                                          value="#{contactBean.newContact.name}"
+                                          required="true"
+                                          requiredMessage="#{msg['validation.name.required']}"
+                                          maxlength="100"
+                                          styleClass="form-input"/>
+                            
+                            <h:outputLabel for="addPhone" value="#{msg['label.phone']}:" styleClass="required"/>
+                            <ace:textEntry id="addPhone" 
+                                          value="#{contactBean.newContact.phoneNumber}"
+                                          required="true"
+                                          requiredMessage="#{msg['validation.phone.required']}"
+                                          maxlength="20"
+                                          styleClass="form-input"/>
+                            
+                            <h:outputLabel for="addEmail" value="#{msg['label.email']}:"/>
+                            <ace:textEntry id="addEmail" 
+                                          value="#{contactBean.newContact.email}"
+                                          maxlength="100"
+                                          styleClass="form-input"/>
+                        </h:panelGrid>
+                        
+                        <div class="dialog-buttons" style="margin-top: 20px; text-align: right;">
+                            <ace:pushButton value="#{msg['button.save']}"
+                                           actionListener="#{contactBean.addContact}"
+                                           styleClass="button">
+                                <ace:ajax execute="addForm" 
+                                         render="@form messages contactsTable contactCount addContactDialog"/>
+                            </ace:pushButton>
+                            
+                            <ace:pushButton value="#{msg['button.cancel']}"
+                                           actionListener="#{contactBean.hideAddContactForm}"
+                                           styleClass="button secondary"
+                                           immediate="true"
+                                           style="margin-left: 10px;">
+                                <ace:ajax execute="@this" render="addContactDialog"/>
+                            </ace:pushButton>
+                        </div>
+                    </div>
+                </h:form>
+            </ace:dialog>
+
+            <!-- Edit Contact Dialog -->
+            <ace:dialog id="editContactDialog"
+                       header="Edit Contact"
+                       visible="#{contactBean.showEditForm}"
+                       modal="true"
+                       resizable="false"
+                       closable="true"
+                       width="400"
+                       height="300">
+                <h:form id="editForm">
+                    <div class="dialog-content">
+                        <h:panelGrid columns="2" styleClass="form-grid">
+                            <h:outputLabel for="editName" value="#{msg['label.name']}:" styleClass="required"/>
+                            <ace:textEntry id="editName" 
+                                          value="#{contactBean.selectedContact.name}"
+                                          required="true"
+                                          requiredMessage="#{msg['validation.name.required']}"
+                                          maxlength="100"
+                                          styleClass="form-input"/>
+                            
+                            <h:outputLabel for="editPhone" value="#{msg['label.phone']}:" styleClass="required"/>
+                            <ace:textEntry id="editPhone" 
+                                          value="#{contactBean.selectedContact.phoneNumber}"
+                                          required="true"
+                                          requiredMessage="#{msg['validation.phone.required']}"
+                                          maxlength="20"
+                                          styleClass="form-input"/>
+                            
+                            <h:outputLabel for="editEmail" value="#{msg['label.email']}:"/>
+                            <ace:textEntry id="editEmail" 
+                                          value="#{contactBean.selectedContact.email}"
+                                          maxlength="100"
+                                          styleClass="form-input"/>
+                        </h:panelGrid>
+                        
+                        <div class="dialog-buttons" style="margin-top: 20px; text-align: right;">
+                            <ace:pushButton value="#{msg['button.save']}"
+                                           actionListener="#{contactBean.updateContact}"
+                                           styleClass="button">
+                                <ace:ajax execute="editForm" 
+                                         render="@form messages contactsTable contactCount editContactDialog"/>
+                            </ace:pushButton>
+                            
+                            <ace:pushButton value="#{msg['button.cancel']}"
+                                           actionListener="#{contactBean.hideEditContactForm}"
+                                           styleClass="button secondary"
+                                           immediate="true"
+                                           style="margin-left: 10px;">
+                                <ace:ajax execute="@this" render="editContactDialog"/>
+                            </ace:pushButton>
+                        </div>
+                    </div>
+                </h:form>
+            </ace:dialog>
+
+            <!-- Delete Confirmation Dialog -->
+            <ace:dialog id="deleteConfirmDialog"
+                       header="Confirm Delete"
+                       visible="#{contactBean.showDeleteConfirmation}"
+                       modal="true"
+                       closable="true"
+                       width="350"
+                       height="200">
+                <h:form id="deleteForm">
+                    <div class="dialog-content" style="text-align: center;">
+                        <p>#{msg['message.confirm.delete']}</p>
+                        <h:outputText value="Contact: #{contactBean.selectedContact.name}" 
+                                     style="font-weight: bold; display: block; margin-bottom: 15px;"/>
+                        
+                        <div class="dialog-buttons">
+                            <ace:pushButton value="Yes, Delete"
+                                           actionListener="#{contactBean.deleteContact}"
+                                           styleClass="button danger">
+                                <ace:ajax execute="@this" 
+                                         render="messages contactsTable contactCount deleteConfirmDialog"/>
+                            </ace:pushButton>
+                            
+                            <ace:pushButton value="Cancel"
+                                           actionListener="#{contactBean.hideDeleteConfirmation}"
+                                           styleClass="button secondary"
+                                           immediate="true"
+                                           style="margin-left: 10px;">
+                                <ace:ajax execute="@this" render="deleteConfirmDialog"/>
+                            </ace:pushButton>
+                        </div>
+                    </div>
+                </h:form>
+            </ace:dialog>
+
+        </div>
+    </f:view>
+</h:body>
+</html>
