@@ -33,13 +33,13 @@
   - Write unit tests for ContactService business logic with mocked dependencies
   - _Requirements: 1.1, 2.2, 3.2, 4.2, 5.1, 7.3_
 
-- [ ] 6. Configure JSF and ICEfaces web application
+- [x] 6. Configure JSF and ICEfaces web application
   - Create web.xml with JSF servlet configuration and ICEfaces settings
   - Implement faces-config.xml for JSF navigation and managed bean configuration
   - Configure ICEfaces resource handling and theme settings
   - _Requirements: 6.1, 6.4_
 
-- [ ] 7. Create ContactBean managed bean for UI interaction
+- [x] 7. Create ContactBean managed bean for UI interaction
   - Implement ContactBean with CDI @Named and @ViewScoped annotations
   - Add properties for contact list, selected contact, search term, and form states
   - Create action methods for add, edit, delete, and search operations

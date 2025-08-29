@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-facesconfig_2_2.xsd"
+              version="2.2">
+
+    <!-- Application Configuration -->
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        
+        <!-- Message bundle configuration -->
+        <resource-bundle>
+            <base-name>messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        
+        <!-- Navigation handler for ICEfaces -->
+        <navigation-handler>org.icefaces.impl.application.NavigationHandler</navigation-handler>
+        
+        <!-- State manager for ICEfaces -->
+        <state-manager>org.icefaces.impl.application.StateManagerImpl</state-manager>
+    </application>
+
+    <!-- Factory Configuration for ICEfaces -->
+    <factory>
+        <application-factory>org.icefaces.impl.application.ApplicationFactoryImpl</application-factory>
+        <faces-context-factory>org.icefaces.impl.context.FacesContextFactoryImpl</faces-context-factory>
+        <lifecycle-factory>org.icefaces.impl.lifecycle.LifecycleFactoryImpl</lifecycle-factory>
+        <render-kit-factory>org.icefaces.impl.renderkit.RenderKitFactoryImpl</render-kit-factory>
+    </factory>
+
+    <!-- Navigation Rules -->
+    <navigation-rule>
+        <from-view-id>/contacts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>contacts</from-outcome>
+            <to-view-id>/contacts.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Global navigation case for home -->
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/contacts.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Error handling navigation -->
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>error</from-outcome>
+            <to-view-id>/error.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Lifecycle configuration -->
+    <lifecycle>
+        <phase-listener>org.icefaces.impl.event.PhaseListener</phase-listener>
+    </lifecycle>
+
+    <!-- Render kit configuration for ICEfaces ACE components -->
+    <render-kit>
+        <render-kit-id>HTML_BASIC</render-kit-id>
+        <render-kit-class>org.icefaces.ace.renderkit.CoreRenderer</render-kit-class>
+    </render-kit>
+
+    <!-- Validator configuration -->
+    <validator>
+        <validator-id>phoneValidator</validator-id>
+        <validator-class>com.phonebook.validator.PhoneValidator</validator-class>
+    </validator>
+
+    <validator>
+        <validator-id>emailValidator</validator-id>
+        <validator-class>com.phonebook.validator.EmailValidator</validator-class>
+    </validator>
+
+    <!-- Converter configuration -->
+    <converter>
+        <converter-id>contactConverter</converter-id>
+        <converter-class>com.phonebook.converter.ContactConverter</converter-class>
+    </converter>
+
+</faces-config>

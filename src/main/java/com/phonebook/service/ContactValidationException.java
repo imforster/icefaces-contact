@@ -2,7 +2,8 @@ package com.phonebook.service;
 
 /**
  * Exception thrown when contact validation fails.
- * This is a specific type of ContactServiceException for validation errors.
+ * This is a specific type of ContactServiceException for cases
+ * where Bean Validation constraints are violated.
  */
 public class ContactValidationException extends ContactServiceException {
 
@@ -11,7 +12,7 @@ public class ContactValidationException extends ContactServiceException {
     /**
      * Constructs a new ContactValidationException with the specified detail message.
      *
-     * @param message the detail message
+     * @param message the detail message containing validation errors
      */
     public ContactValidationException(String message) {
         super(message);
@@ -20,8 +21,8 @@ public class ContactValidationException extends ContactServiceException {
     /**
      * Constructs a new ContactValidationException with the specified detail message and cause.
      *
-     * @param message the detail message
-     * @param cause   the cause of the exception
+     * @param message the detail message containing validation errors
+     * @param cause   the cause of this exception
      */
     public ContactValidationException(String message, Throwable cause) {
         super(message, cause);

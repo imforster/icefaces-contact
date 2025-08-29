@@ -1,8 +1,9 @@
 package com.phonebook.service;
 
 /**
- * General exception for ContactService operations.
- * Thrown when business logic operations fail due to system errors.
+ * Exception thrown when a service operation fails.
+ * This is a runtime exception that wraps underlying exceptions
+ * from the persistence layer or other service operations.
  */
 public class ContactServiceException extends RuntimeException {
 
@@ -21,7 +22,7 @@ public class ContactServiceException extends RuntimeException {
      * Constructs a new ContactServiceException with the specified detail message and cause.
      *
      * @param message the detail message
-     * @param cause   the cause of the exception
+     * @param cause   the cause of this exception
      */
     public ContactServiceException(String message, Throwable cause) {
         super(message, cause);
@@ -30,7 +31,7 @@ public class ContactServiceException extends RuntimeException {
     /**
      * Constructs a new ContactServiceException with the specified cause.
      *
-     * @param cause the cause of the exception
+     * @param cause the cause of this exception
      */
     public ContactServiceException(Throwable cause) {
         super(cause);

@@ -1,0 +1,256 @@
+/* Phone Book Application Styles */
+
+/* General Layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.header h1 {
+    color: #333;
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.header p {
+    color: #666;
+    margin: 10px 0 0 0;
+    font-size: 1.1em;
+}
+
+/* Button Styles */
+.button, .ui-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+    font-size: 14px;
+}
+
+.button:hover, .ui-button:hover {
+    background-color: #0056b3;
+}
+
+.button.secondary {
+    background-color: #6c757d;
+}
+
+.button.secondary:hover {
+    background-color: #545b62;
+}
+
+.button.danger {
+    background-color: #dc3545;
+}
+
+.button.danger:hover {
+    background-color: #c82333;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Search Styles */
+.search-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.search-input {
+    width: 300px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Table Styles */
+.contacts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.contacts-table th,
+.contacts-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.contacts-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.contacts-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Message Styles */
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.message.info {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+.message.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+/* Dialog Styles */
+.dialog-content {
+    padding: 20px;
+}
+
+.dialog-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        margin: 10px;
+    }
+    
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .contacts-table {
+        font-size: 14px;
+    }
+    
+    .contacts-table th,
+    .contacts-table td {
+        padding: 8px;
+    }
+}
+
+/* ICEfaces ACE Component Overrides */
+.ui-datatable .ui-datatable-header {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-widget-content {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-widget-content:hover {
+    background-color: #f5f5f5;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.ui-dialog .ui-dialog-content {
+    padding: 20px;
+}
+
+/* Loading indicator */
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.loading:before {
+    content: "Loading...";
+}
+
+/* No data message */
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
