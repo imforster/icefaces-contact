@@ -93,7 +93,7 @@
   - Write tests for validation scenarios and error handling paths
   - _Requirements: 2.3, 3.3, 7.3_
 
-- [ ] 14. Create integration tests for end-to-end workflows
+- [x] 14. Create integration tests for end-to-end workflows
   - Set up Arquillian test configuration for WildFly container testing
   - Write integration tests for complete CRUD workflows with H2 database
   - Test database transaction handling and rollback scenarios

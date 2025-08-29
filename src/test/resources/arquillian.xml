@@ -4,10 +4,19 @@
             xsi:schemaLocation="http://jboss.org/schema/arquillian
                 http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
-    <container qualifier="wildfly-embedded" default="true">
+    <engine>
+        <property name="deploymentExportPath">target/arquillian-deployments</property>
+    </engine>
+
+    <container qualifier="wildfly-managed" default="true">
         <configuration>
-            <property name="jbossHome">target/wildfly-10.1.0.Final</property>
-            <property name="modulePath">target/wildfly-10.1.0.Final/modules</property>
+            <property name="jbossHome">wildfly-26.1.3.Final</property>
+            <property name="serverConfig">standalone.xml</property>
+            <property name="allowConnectingToRunningServer">true</property>
+            <property name="managementAddress">127.0.0.1</property>
+            <property name="managementPort">9990</property>
+            <property name="startupTimeoutInSeconds">120</property>
+            <property name="jbossArguments">-Djboss.socket.binding.port-offset=100</property>
         </configuration>
     </container>
 
