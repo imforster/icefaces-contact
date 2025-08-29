@@ -29,6 +29,14 @@ public class ContactService {
     private Validator validator;
 
     /**
+     * Setter for ContactRepository - used for testing.
+     * @param contactRepository the repository to set
+     */
+    public void setContactRepository(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
+
+    /**
      * Retrieves all contacts from the database.
      *
      * @return List of all contacts, empty list if no contacts exist

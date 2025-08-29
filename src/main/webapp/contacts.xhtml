@@ -24,6 +24,15 @@
             </div>
 
             <!-- Messages Display -->
+            <ace:growl id="growl" 
+                      globalOnly="true" 
+                      showDetail="true"
+                      showSummary="true"
+                      life="4000"
+                      sticky="false"
+                      autoUpdate="true"/>
+            
+            <!-- Fallback messages for non-AJAX scenarios -->
             <h:messages id="messages" 
                        globalOnly="true" 
                        showDetail="true"
@@ -31,7 +40,8 @@
                        styleClass="messages"
                        errorClass="message error"
                        infoClass="message info"
-                       warnClass="message warning"/>
+                       warnClass="message warning"
+                       rendered="false"/>
 
             <!-- Search and Add Contact Section -->
             <h:form id="searchForm">
@@ -145,26 +155,47 @@
                     <div class="dialog-content">
                         <h:panelGrid columns="2" styleClass="form-grid">
                             <h:outputLabel for="addName" value="#{msg['label.name']}:" styleClass="required"/>
-                            <ace:textEntry id="addName" 
-                                          value="#{contactBean.newContact.name}"
-                                          required="true"
-                                          requiredMessage="#{msg['validation.name.required']}"
-                                          maxlength="100"
-                                          styleClass="form-input"/>
+                            <h:panelGroup>
+                                <ace:textEntry id="addName" 
+                                              value="#{contactBean.newContact.name}"
+                                              required="true"
+                                              requiredMessage="#{msg['validation.name.required']}"
+                                              maxlength="100"
+                                              styleClass="form-input"
+                                              placeholder="Enter contact name">
+                                    <f:validateLength minimum="1" maximum="100"/>
+                                </ace:textEntry>
+                                <h:message for="addName" styleClass="validation-message"/>
+                            </h:panelGroup>
                             
                             <h:outputLabel for="addPhone" value="#{msg['label.phone']}:" styleClass="required"/>
-                            <ace:textEntry id="addPhone" 
-                                          value="#{contactBean.newContact.phoneNumber}"
-                                          required="true"
-                                          requiredMessage="#{msg['validation.phone.required']}"
-                                          maxlength="20"
-                                          styleClass="form-input"/>
+                            <h:panelGroup>
+                                <ace:textEntry id="addPhone" 
+                                              value="#{contactBean.newContact.phoneNumber}"
+                                              required="true"
+                                              requiredMessage="#{msg['validation.phone.required']}"
+                                              maxlength="20"
+                                              styleClass="form-input"
+                                              placeholder="Enter phone number">
+                                    <f:validateLength minimum="1" maximum="20"/>
+                                    <f:validateRegex pattern="^[\d\-\+\(\)\s]+$" 
+                                                    validatorMessage="#{msg['validation.phone.invalid']}"/>
+                                </ace:textEntry>
+                                <h:message for="addPhone" styleClass="validation-message"/>
+                            </h:panelGroup>
                             
                             <h:outputLabel for="addEmail" value="#{msg['label.email']}:"/>
-                            <ace:textEntry id="addEmail" 
-                                          value="#{contactBean.newContact.email}"
-                                          maxlength="100"
-                                          styleClass="form-input"/>
+                            <h:panelGroup>
+                                <ace:textEntry id="addEmail" 
+                                              value="#{contactBean.newContact.email}"
+                                              maxlength="100"
+                                              styleClass="form-input"
+                                              placeholder="Enter email address (optional)">
+                                    <f:validateRegex pattern="^$|^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})$" 
+                                                    validatorMessage="#{msg['validation.email.invalid']}"/>
+                                </ace:textEntry>
+                                <h:message for="addEmail" styleClass="validation-message"/>
+                            </h:panelGroup>
                         </h:panelGrid>
                         
                         <div class="dialog-buttons" style="margin-top: 20px; text-align: right;">
@@ -172,7 +203,7 @@
                                            actionListener="#{contactBean.addContact}"
                                            styleClass="button">
                                 <ace:ajax execute="addForm" 
-                                         render="@form messages contactsTable contactCount addContactDialog"/>
+                                         render="@form growl contactsTable contactCount addContactDialog"/>
                             </ace:pushButton>
                             
                             <ace:pushButton value="#{msg['button.cancel']}"
@@ -227,7 +258,7 @@
                                            actionListener="#{contactBean.updateContact}"
                                            styleClass="button">
                                 <ace:ajax execute="editForm" 
-                                         render="@form messages contactsTable contactCount editContactDialog"/>
+                                         render="@form growl contactsTable contactCount editContactDialog"/>
                             </ace:pushButton>
                             
                             <ace:pushButton value="#{msg['button.cancel']}"
@@ -261,7 +292,7 @@
                                            actionListener="#{contactBean.deleteContact}"
                                            styleClass="button danger">
                                 <ace:ajax execute="@this" 
-                                         render="messages contactsTable contactCount deleteConfirmDialog"/>
+                                         render="growl contactsTable contactCount deleteConfirmDialog"/>
                             </ace:pushButton>
                             
                             <ace:pushButton value="Cancel"

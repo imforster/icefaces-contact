@@ -33,6 +33,14 @@ public class ContactBean implements Serializable {
     @Inject
     private ContactService contactService;
 
+    /**
+     * Setter for ContactService - used for testing.
+     * @param contactService the service to set
+     */
+    public void setContactService(ContactService contactService) {
+        this.contactService = contactService;
+    }
+
     // Properties for contact management
     private List<Contact> contacts;
     private List<Contact> filteredContacts;

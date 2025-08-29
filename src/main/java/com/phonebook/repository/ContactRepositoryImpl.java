@@ -22,6 +22,14 @@ public class ContactRepositoryImpl implements ContactRepository {
     private EntityManager entityManager;
 
     /**
+     * Setter for EntityManager - used for testing.
+     * @param entityManager the entity manager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
