@@ -1,6 +1,7 @@
 package com.phonebook.bean;
 
 import com.phonebook.entity.Contact;
+import com.phonebook.exception.GlobalExceptionHandler;
 import com.phonebook.service.ContactService;
 import com.phonebook.service.ContactServiceException;
 import com.phonebook.service.ContactNotFoundException;
@@ -12,6 +13,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,9 @@ public class ContactBean implements Serializable {
 
     @Inject
     private ContactService contactService;
+
+    @Inject
+    private GlobalExceptionHandler exceptionHandler;
 
     /**
      * Setter for ContactService - used for testing.
@@ -80,8 +86,15 @@ public class ContactBean implements Serializable {
             filteredContacts = new ArrayList<>(contacts);
             LOGGER.info("Loaded " + contacts.size() + " contacts");
         } catch (ContactServiceException e) {
-            LOGGER.log(Level.SEVERE, "Error loading contacts", e);
-            addErrorMessage("Error loading contacts", "Unable to load contacts from database. Please try again.");
+            exceptionHandler.handleContactServiceException(e);
+            contacts = new ArrayList<>();
+            filteredContacts = new ArrayList<>();
+        } catch (PersistenceException e) {
+            exceptionHandler.handleDatabaseException(e);
+            contacts = new ArrayList<>();
+            filteredContacts = new ArrayList<>();
+        } catch (Exception e) {
+            exceptionHandler.handleGenericException(e);
             contacts = new ArrayList<>();
             filteredContacts = new ArrayList<>();
         }
@@ -137,11 +150,15 @@ public class ContactBean implements Serializable {
             addInfoMessage("Success", "Contact '" + savedContact.getName() + "' has been added successfully.");
             
         } catch (ContactValidationException e) {
-            LOGGER.log(Level.WARNING, "Validation error adding contact", e);
-            addErrorMessage("Validation Error", e.getMessage());
+            exceptionHandler.handleContactValidationException(e);
+        } catch (ConstraintViolationException e) {
+            exceptionHandler.handleValidationException(e);
         } catch (ContactServiceException e) {
-            LOGGER.log(Level.SEVERE, "Error adding contact", e);
-            addErrorMessage("Error", "Unable to add contact. Please try again.");
+            exceptionHandler.handleContactServiceException(e);
+        } catch (PersistenceException e) {
+            exceptionHandler.handleDatabaseException(e);
+        } catch (Exception e) {
+            exceptionHandler.handleGenericException(e);
         }
     }
 
@@ -209,17 +226,20 @@ public class ContactBean implements Serializable {
             addInfoMessage("Success", "Contact '" + updatedContact.getName() + "' has been updated successfully.");
             
         } catch (ContactNotFoundException e) {
-            LOGGER.log(Level.WARNING, "Contact not found for update", e);
-            addErrorMessage("Error", "Contact not found. It may have been deleted by another user.");
+            exceptionHandler.handleContactNotFoundException(e);
             loadAllContacts();
             applySearchFilter();
             showEditForm = false;
         } catch (ContactValidationException e) {
-            LOGGER.log(Level.WARNING, "Validation error updating contact", e);
-            addErrorMessage("Validation Error", e.getMessage());
+            exceptionHandler.handleContactValidationException(e);
+        } catch (ConstraintViolationException e) {
+            exceptionHandler.handleValidationException(e);
         } catch (ContactServiceException e) {
-            LOGGER.log(Level.SEVERE, "Error updating contact", e);
-            addErrorMessage("Error", "Unable to update contact. Please try again.");
+            exceptionHandler.handleContactServiceException(e);
+        } catch (PersistenceException e) {
+            exceptionHandler.handleDatabaseException(e);
+        } catch (Exception e) {
+            exceptionHandler.handleGenericException(e);
         }
     }
 
@@ -276,14 +296,16 @@ public class ContactBean implements Serializable {
             addInfoMessage("Success", "Contact '" + contactName + "' has been deleted successfully.");
             
         } catch (ContactNotFoundException e) {
-            LOGGER.log(Level.WARNING, "Contact not found for deletion", e);
-            addErrorMessage("Error", "Contact not found. It may have already been deleted.");
+            exceptionHandler.handleContactNotFoundException(e);
             loadAllContacts();
             applySearchFilter();
             showDeleteConfirmation = false;
         } catch (ContactServiceException e) {
-            LOGGER.log(Level.SEVERE, "Error deleting contact", e);
-            addErrorMessage("Error", "Unable to delete contact. Please try again.");
+            exceptionHandler.handleContactServiceException(e);
+        } catch (PersistenceException e) {
+            exceptionHandler.handleDatabaseException(e);
+        } catch (Exception e) {
+            exceptionHandler.handleGenericException(e);
         }
     }
 
@@ -306,8 +328,10 @@ public class ContactBean implements Serializable {
             LOGGER.info("Search returned " + filteredContacts.size() + " contacts");
             
         } catch (ContactServiceException e) {
-            LOGGER.log(Level.SEVERE, "Error searching contacts", e);
-            addErrorMessage("Search Error", "Unable to search contacts. Please try again.");
+            exceptionHandler.handleContactServiceException(e);
+            filteredContacts = new ArrayList<>(contacts);
+        } catch (Exception e) {
+            exceptionHandler.handleGenericException(e);
             filteredContacts = new ArrayList<>(contacts);
         }
     }

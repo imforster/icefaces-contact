@@ -1,5 +1,7 @@
 package com.phonebook.entity;
 
+import com.phonebook.validation.PhoneNumber;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -30,8 +32,7 @@ public class Contact implements Serializable {
     private String name;
 
     @NotNull(message = "Phone number is required")
-    @Pattern(regexp = "^[+]?[0-9\\s\\-\\(\\)]{7,20}$", 
-             message = "Phone number must be between 7 and 20 characters and contain only numbers, spaces, hyphens, parentheses, and optional plus sign")
+    @PhoneNumber(allowInternational = true, allowExtensions = false, minLength = 7, maxLength = 15)
     @Column(name = "phone_number", nullable = false, length = 20)
     private String phoneNumber;
 

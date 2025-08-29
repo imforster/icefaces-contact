@@ -28,11 +28,12 @@
                       globalOnly="true" 
                       showDetail="true"
                       showSummary="true"
-                      life="4000"
+                      life="6000"
                       sticky="false"
-                      autoUpdate="true"/>
+                      autoUpdate="true"
+                      escape="false"/>
             
-            <!-- Fallback messages for non-AJAX scenarios -->
+            <!-- Enhanced fallback messages for non-AJAX scenarios -->
             <h:messages id="messages" 
                        globalOnly="true" 
                        showDetail="true"
@@ -41,7 +42,18 @@
                        errorClass="message error"
                        infoClass="message info"
                        warnClass="message warning"
-                       rendered="false"/>
+                       fatalClass="message fatal"
+                       rendered="#{facesContext.maximumSeverity != null and not facesContext.partialViewContext.ajaxRequest}"/>
+            
+            <!-- Field-specific validation messages -->
+            <h:messages id="fieldMessages"
+                       globalOnly="false"
+                       showDetail="true"
+                       showSummary="false"
+                       styleClass="field-messages"
+                       errorClass="field-message error"
+                       warnClass="field-message warning"
+                       rendered="#{facesContext.maximumSeverity != null and not facesContext.partialViewContext.ajaxRequest}"/>
 
             <!-- Search and Add Contact Section -->
             <h:form id="searchForm">
