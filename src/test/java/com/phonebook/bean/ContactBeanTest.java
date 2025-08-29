@@ -306,6 +306,49 @@ public class ContactBeanTest {
     }
 
     @Test
+    public void testSearchContactsWithServiceException() {
+        // Given
+        contactBean.setContacts(testContacts);
+        contactBean.setSearchTerm("John");
+        when(contactService.searchContacts("John")).thenThrow(new ContactServiceException("Search error"));
+
+        // When
+        contactBean.searchContacts();
+
+        // Then
+        verify(contactService).searchContacts("John");
+        assertEquals(2, contactBean.getFilteredContacts().size()); // Should fallback to all contacts
+    }
+
+    @Test
+    public void testSearchContactsWithNullTerm() {
+        // Given
+        contactBean.setContacts(testContacts);
+        contactBean.setSearchTerm(null);
+
+        // When
+        contactBean.searchContacts();
+
+        // Then
+        verify(contactService, never()).searchContacts(anyString());
+        assertEquals(2, contactBean.getFilteredContacts().size());
+    }
+
+    @Test
+    public void testSearchContactsWithWhitespaceTerm() {
+        // Given
+        contactBean.setContacts(testContacts);
+        contactBean.setSearchTerm("   ");
+
+        // When
+        contactBean.searchContacts();
+
+        // Then
+        verify(contactService, never()).searchContacts(anyString());
+        assertEquals(2, contactBean.getFilteredContacts().size());
+    }
+
+    @Test
     public void testClearSearch() {
         // Given
         contactBean.setContacts(testContacts);
