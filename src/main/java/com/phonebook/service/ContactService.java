@@ -44,9 +44,9 @@ public class ContactService {
      */
     public List<Contact> getAllContacts() {
         try {
-            LOGGER.info("Retrieving all contacts");
+            LOGGER.info("--- Service: Retrieving all contacts ---");
             List<Contact> contacts = contactRepository.findAll();
-            LOGGER.info("Retrieved " + contacts.size() + " contacts");
+            LOGGER.info("--- Service: Retrieved " + (contacts != null ? contacts.size() : "NULL") + " contacts ---");
             return contacts;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all contacts", e);

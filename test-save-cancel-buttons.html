@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Save and Cancel Buttons</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>ICEfaces Phonebook - Save and Cancel Button Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Instructions</h2>
+        <p>Open the phonebook application at: <a href="http://localhost:8080/phonebook/contacts.xhtml" target="_blank">http://localhost:8080/phonebook/contacts.xhtml</a></p>
+        
+        <h3>Test 1: Add Contact Dialog - Save Button</h3>
+        <ol>
+            <li>Click "Add Contact" button</li>
+            <li>Fill in Name: "Test User"</li>
+            <li>Fill in Phone: "555-1234"</li>
+            <li>Leave Email empty (optional)</li>
+            <li>Click "Save" button</li>
+            <li><strong>Expected:</strong> Dialog should close, contact should appear in table, success message should show</li>
+        </ol>
+        
+        <h3>Test 2: Add Contact Dialog - Cancel Button</h3>
+        <ol>
+            <li>Click "Add Contact" button</li>
+            <li>Fill in some data (don't save)</li>
+            <li>Click "Cancel" button</li>
+            <li><strong>Expected:</strong> Dialog should close, no contact added, form should be reset</li>
+        </ol>
+        
+        <h3>Test 3: Add Contact Dialog - Validation Error</h3>
+        <ol>
+            <li>Click "Add Contact" button</li>
+            <li>Leave Name field empty</li>
+            <li>Fill in Phone: "555-5678"</li>
+            <li>Click "Save" button</li>
+            <li><strong>Expected:</strong> Dialog should stay open, validation error message should show</li>
+            <li>Fill in Name: "Test User 2"</li>
+            <li>Click "Save" button</li>
+            <li><strong>Expected:</strong> Dialog should close, contact should be saved</li>
+        </ol>
+        
+        <h3>Test 4: Edit Contact Dialog - Save Button</h3>
+        <ol>
+            <li>Click "Edit" button on an existing contact</li>
+            <li>Change the name to "Updated Name"</li>
+            <li>Click "Save" button</li>
+            <li><strong>Expected:</strong> Dialog should close, contact should be updated in table, success message should show</li>
+        </ol>
+        
+        <h3>Test 5: Edit Contact Dialog - Cancel Button</h3>
+        <ol>
+            <li>Click "Edit" button on an existing contact</li>
+            <li>Change some data (don't save)</li>
+            <li>Click "Cancel" button</li>
+            <li><strong>Expected:</strong> Dialog should close, no changes saved, original data preserved</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>Key Fixes Applied</h2>
+        <ul>
+            <li class="success">✓ Added AJAX handling to Cancel buttons in both Add and Edit dialogs</li>
+            <li class="success">✓ Fixed render targets for Save buttons to update all necessary components</li>
+            <li class="success">✓ Improved dialog state management to keep dialogs open on validation errors</li>
+            <li class="success">✓ Enhanced error handling to preserve dialog state during failures</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>Technical Details</h2>
+        <p><strong>Changes Made:</strong></p>
+        <ul>
+            <li>Add Contact Save Button: Added proper render targets including dialog, messages, table, and contact count</li>
+            <li>Add Contact Cancel Button: Added AJAX with execute="@this" and render="addContactDialog"</li>
+            <li>Edit Contact Cancel Button: Already had AJAX but improved render targets</li>
+            <li>ContactBean: Enhanced addContact() and updateContact() methods to only close dialogs on successful operations</li>
+            <li>Validation: Dialog stays open when validation fails, allowing user to correct errors</li>
+        </ul>
+    </div>
+</body>
+</html>

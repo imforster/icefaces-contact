@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Container Styling Test</title>
+    <link rel="stylesheet" href="src/main/webapp/resources/css/phonebook.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Phonebook Application</h1>
+            <p>Manage your personal contacts with ease</p>
+        </div>
+
+        <!-- Search Container Test -->
+        <div class="search-container">
+            <table class="search-panel">
+                <tr>
+                    <td>
+                        <label for="searchInput" class="search-label">Search:</label>
+                    </td>
+                    <td>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Enter name to search..." value="">
+                    </td>
+                    <td>
+                        <button class="button secondary">Clear</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Add Contact Button -->
+        <div style="margin-bottom: 20px;">
+            <button class="button">Add Contact</button>
+            <span class="contact-count" style="margin-left: 20px;">Showing 5 contact(s)</span>
+        </div>
+
+        <!-- Sample Table -->
+        <table class="contacts-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="contact-name">John Doe</span></td>
+                    <td><span class="contact-phone">555-1234</span></td>
+                    <td><span class="contact-email">john@example.com</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="button secondary small">Edit</button>
+                            <button class="button danger small">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="contact-name">Jane Smith</span></td>
+                    <td><span class="contact-phone">555-5678</span></td>
+                    <td><span class="contact-email-empty">-</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="button secondary small">Edit</button>
+                            <button class="button danger small">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Test search input functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('focus', function() {
+            console.log('Search input focused - enhanced styling should be visible');
+        });
+        
+        searchInput.addEventListener('input', function() {
+            console.log('Search value:', this.value);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Form Submission</title>
+</head>
+<body>
+    <h2>Test Form Submission</h2>
+    <p>This test will help verify if the form submission is working correctly.</p>
+    
+    <h3>Steps to test:</h3>
+    <ol>
+        <li>Open the phonebook application: <a href="http://localhost:8080/phonebook/" target="_blank">http://localhost:8080/phonebook/</a></li>
+        <li>Click the "Add Contact" button to open the form</li>
+        <li>Fill in the form:
+            <ul>
+                <li>Name: Test User</li>
+                <li>Phone: 123-456-7890</li>
+                <li>Email: test@example.com (optional)</li>
+            </ul>
+        </li>
+        <li>Click the "Save" button</li>
+        <li>Check if the contact appears in the table</li>
+        <li>Monitor the server logs for the "TEST METHOD CALLED" message</li>
+    </ol>
+    
+    <h3>Expected behavior:</h3>
+    <ul>
+        <li>The form should submit successfully</li>
+        <li>The addContact method should be called (visible in logs)</li>
+        <li>The contact should appear in the contacts table</li>
+        <li>The form should close after successful submission</li>
+    </ul>
+    
+    <h3>If the test fails:</h3>
+    <ul>
+        <li>Check browser console for JavaScript errors</li>
+        <li>Verify that the f:ajax tag is present on the save button</li>
+        <li>Check if validation is preventing submission</li>
+        <li>Monitor server logs for any error messages</li>
+    </ul>
+</body>
+</html>

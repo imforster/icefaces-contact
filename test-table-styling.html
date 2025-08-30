@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Styling Test - ICEfaces Phonebook</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 20px;
+            background-color: #f8fafc;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 40px;
+        }
+        .test-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        .test-description {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+        .test-link {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px 10px 10px 0;
+            font-weight: 500;
+        }
+        .test-link:hover {
+            background: #1d4ed8;
+        }
+        .checklist {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #2563eb;
+        }
+        .checklist h3 {
+            margin-top: 0;
+            color: #1e293b;
+        }
+        .checklist ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .checklist li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Table Styling Enhancement Test</h1>
+        <p>This test verifies the implementation of Task 5: Redesign table and data display</p>
+        
+        <div class="test-section">
+            <h2 class="test-title">Test the Enhanced Table Design</h2>
+            <p class="test-description">
+                Click the link below to open the phonebook application and verify the table styling improvements.
+            </p>
+            <a href="http://localhost:8080/icefaces-phonebook/contacts.xhtml" class="test-link" target="_blank">
+                Open Phonebook Application
+            </a>
+        </div>
+
+        <div class="test-section">
+            <div class="checklist">
+                <h3>✅ Verification Checklist - Task 5 Requirements</h3>
+                <ul>
+                    <li><strong>Table Header Styling:</strong> Headers should have a subtle gradient background (#f8fafc to #f1f5f9), uppercase text, and enhanced typography</li>
+                    <li><strong>Alternating Row Colors:</strong> Even rows should be #f9fafb, odd rows should be white for better readability</li>
+                    <li><strong>Hover Effects:</strong> Rows should have subtle hover effects with light blue background (#dbeafe), slight elevation, and smooth transitions</li>
+                    <li><strong>Empty State Styling:</strong> "No contacts found" message should have an enhanced design with icon, dashed border, and centered layout</li>
+                    <li><strong>Overall Polish:</strong> Table should have rounded corners, subtle shadows, and consistent spacing</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Test Scenarios</h2>
+            <div class="test-description">
+                <h3>1. Test with Data</h3>
+                <p>Add some contacts to see the alternating row colors and hover effects in action.</p>
+                
+                <h3>2. Test Empty State</h3>
+                <p>Clear all contacts or use the search to get no results and verify the enhanced empty state message.</p>
+                
+                <h3>3. Test Responsive Design</h3>
+                <p>Resize the browser window to test mobile responsiveness of the table styling.</p>
+                
+                <h3>4. Test Hover Interactions</h3>
+                <p>Hover over table rows to verify the smooth transitions and visual feedback.</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="checklist">
+                <h3>🎨 Design System Compliance</h3>
+                <ul>
+                    <li><strong>Colors:</strong> Uses CSS custom properties from the design system</li>
+                    <li><strong>Typography:</strong> Consistent font weights, sizes, and spacing</li>
+                    <li><strong>Spacing:</strong> Uses spacing variables (--spacing-md, --spacing-lg, etc.)</li>
+                    <li><strong>Shadows:</strong> Subtle shadows for depth and visual hierarchy</li>
+                    <li><strong>Border Radius:</strong> Consistent rounded corners using --radius-lg</li>
+                    <li><strong>Transitions:</strong> Smooth animations using --transition-base</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-open the application in a new tab for testing
+        setTimeout(() => {
+            console.log('Table styling test ready. Click the link above to test the enhanced table design.');
+        }, 1000);
+    </script>
+</body>
+</html>

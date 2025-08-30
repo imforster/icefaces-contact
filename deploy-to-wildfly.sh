@@ -82,7 +82,12 @@ fi
 
 # Configure datasource
 echo "Configuring H2 datasource..."
-$WILDFLY_HOME/bin/jboss-cli.sh --connect --file=src/main/resources/wildfly-datasource.cli
+if $WILDFLY_HOME/bin/jboss-cli.sh --connect --command="/subsystem=datasources/data-source=PhonebookDS:read-resource" 2>/dev/null | grep -q 'success'; then
+    echo "Datasource PhonebookDS already exists."
+else
+    echo "Configuring H2 datasource..."
+    $WILDFLY_HOME/bin/jboss-cli.sh --connect --file=src/main/resources/wildfly-datasource.cli
+fi
 
 # Deploy the application
 echo "Deploying application..."

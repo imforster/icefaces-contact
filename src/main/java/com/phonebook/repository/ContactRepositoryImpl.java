@@ -34,12 +34,12 @@ public class ContactRepositoryImpl implements ContactRepository {
      */
     @Override
     public List<Contact> findAll() {
-        LOGGER.log(Level.FINE, "Finding all contacts");
+        LOGGER.info("--- Repository: Finding all contacts ---");
         try {
             TypedQuery<Contact> query = entityManager.createQuery(
                 "SELECT c FROM Contact c ORDER BY c.name ASC", Contact.class);
             List<Contact> contacts = query.getResultList();
-            LOGGER.log(Level.FINE, "Found {0} contacts", contacts.size());
+            LOGGER.info("--- Repository: Found " + (contacts != null ? contacts.size() : "NULL") + " contacts ---");
             return contacts;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error finding all contacts", e);

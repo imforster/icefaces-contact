@@ -65,7 +65,7 @@ public class ContactBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        LOGGER.info("Initializing ContactBean");
+        LOGGER.info("================ INITIALIZING CONTACT BEAN ================");
         newContact = new Contact();
         selectedContact = new Contact();
         searchTerm = "";
@@ -81,10 +81,10 @@ public class ContactBean implements Serializable {
      */
     public void loadAllContacts() {
         try {
-            LOGGER.info("Loading all contacts");
+            LOGGER.info("--- Loading all contacts ---");
             contacts = contactService.getAllContacts();
             filteredContacts = new ArrayList<>(contacts);
-            LOGGER.info("Loaded " + contacts.size() + " contacts");
+            LOGGER.info("--- Loaded " + (contacts != null ? contacts.size() : "NULL") + " contacts ---");
         } catch (ContactServiceException e) {
             exceptionHandler.handleContactServiceException(e);
             contacts = new ArrayList<>();
@@ -121,6 +121,14 @@ public class ContactBean implements Serializable {
     }
 
     /**
+     * Test method to verify form submission is working.
+     */
+    public void testMethod() {
+        LOGGER.info("=== TEST METHOD CALLED - FORM SUBMISSION WORKS! ===");
+        addInfoMessage("Test", "Test button clicked successfully!");
+    }
+
+    /**
      * Action method to add a new contact.
      * Validates input, saves the contact, and refreshes the contact list.
      */
@@ -128,6 +136,8 @@ public class ContactBean implements Serializable {
         try {
             LOGGER.info("=== ADD CONTACT METHOD CALLED ===");
             LOGGER.info("Adding new contact: " + (newContact != null ? newContact.getName() : "NULL"));
+            LOGGER.info("New contact phone: " + (newContact != null ? newContact.getPhoneNumber() : "NULL"));
+            LOGGER.info("New contact email: " + (newContact != null ? newContact.getEmail() : "NULL"));
             
             if (newContact.getName() == null || newContact.getName().trim().isEmpty()) {
                 addErrorMessage("Validation Error", "Contact name is required.");
@@ -142,9 +152,9 @@ public class ContactBean implements Serializable {
             Contact savedContact = contactService.saveContact(newContact);
             LOGGER.info("Successfully added contact with ID: " + savedContact.getId());
             
-            // Refresh contact list and reset form
-            loadAllContacts();
-            applySearchFilter();
+            // Add the new contact to the lists and reset the form
+            contacts.add(savedContact);
+            applySearchFilter(); // This will put the new contact in the filtered list
             newContact = new Contact();
             showAddForm = false; // Only close dialog on successful save
             
@@ -223,8 +233,11 @@ public class ContactBean implements Serializable {
             Contact updatedContact = contactService.updateContact(selectedContact);
             LOGGER.info("Successfully updated contact: " + updatedContact.getName());
             
-            // Refresh contact list and reset form
-            loadAllContacts();
+            // Update the contact in the list and reset the form
+            // First, remove the old version
+            contacts.removeIf(c -> c.getId().equals(updatedContact.getId()));
+            // Then, add the updated version
+            contacts.add(updatedContact);
             applySearchFilter();
             selectedContact = new Contact();
             showEditForm = false; // Only close dialog on successful update

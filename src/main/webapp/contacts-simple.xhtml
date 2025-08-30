@@ -65,7 +65,7 @@
                                    value="Add Contact"
                                    actionListener="#{contactBean.showAddContactForm}"
                                    styleClass="button">
-                        <f:ajax execute="@this" render="addContactDialog"/>
+                        <f:ajax execute="@this" render="@all"/>
                     </h:commandButton>
                     
                     <!-- Contact Count Display -->
@@ -115,7 +115,7 @@
                                            actionListener="#{contactBean.showEditContactForm(contact)}"
                                            styleClass="button secondary"
                                            style="margin-right: 5px;">
-                                <f:ajax execute="@this" render="editContactDialog"/>
+                                <f:ajax execute="@this" render="@all"/>
                             </h:commandButton>
                             
                             <h:commandButton value="Delete"
