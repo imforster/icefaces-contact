@@ -216,7 +216,33 @@ public class SimpleContactBean implements Serializable {
     public void hideEditContactForm() {}
     public void showDeleteConfirmation(Contact contact) {}
     public void hideDeleteConfirmation() {}
-    public void addContact() {}
+    
+    public String addContact() {
+        try {
+            if (newContact.getName() == null || newContact.getName().trim().isEmpty()) {
+                addMessage("Name is required");
+                return null;
+            }
+            if (newContact.getPhoneNumber() == null || newContact.getPhoneNumber().trim().isEmpty()) {
+                addMessage("Phone number is required");
+                return null;
+            }
+            
+            contactService.saveContact(newContact);
+            addMessage("Contact added successfully!");
+            
+            // Reset form
+            newContact = new Contact();
+            
+            // Redirect to contacts page
+            return "contacts.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.severe("Error adding contact: " + e.getMessage());
+            addMessage("Error: " + e.getMessage());
+            return null;
+        }
+    }
+    
     public void updateContact() {}
     public void deleteContact() {}
     public void testMethod() {}
