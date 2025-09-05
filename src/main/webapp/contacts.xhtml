@@ -73,30 +73,35 @@
             <h:form id="contactsForm">
                 <ace:dataTable id="contactsTable" value="#{contactBean.filteredContacts}" var="contact" rows="10"
                     paginator="true" paginatorPosition="bottom"
-                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="5,10,15,20"
+                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                    rowsPerPageTemplate="5,10,15,20,25"
+                    currentPageReportTemplate="Showing {startRecord} to {endRecord} of {totalRecords} contacts"
                     emptyMessage="#{contactBean.searchActive ? msg['message.no.matches'] : msg['message.no.contacts']}"
-                    styleClass="contacts-table" rowStyleClass="contact-row">
+                    styleClass="contacts-table" rowStyleClass="contact-row"
+                    filterable="true">
 
-                    <!-- Name Column -->
-                    <ace:column headerText="#{msg['label.name']}" sortBy="#{contact.name}">
+                    <!-- Name Column with Filter -->
+                    <ace:column headerText="#{msg['label.name']}" sortBy="#{contact.name}" 
+                               filterBy="#{contact.name}" filterMatchMode="contains">
                         <h:outputText value="#{contact.name}" styleClass="contact-name" />
                     </ace:column>
 
-                    <!-- Phone Number Column -->
-                    <ace:column headerText="#{msg['label.phone']}" sortBy="#{contact.phoneNumber}">
+                    <!-- Phone Number Column with Filter -->
+                    <ace:column headerText="#{msg['label.phone']}" sortBy="#{contact.phoneNumber}"
+                               filterBy="#{contact.phoneNumber}" filterMatchMode="contains">
                         <h:outputText value="#{contact.phoneNumber}" styleClass="contact-phone" />
                     </ace:column>
 
-                    <!-- Email Column -->
-                    <ace:column headerText="#{msg['label.email']}" sortBy="#{contact.email}">
+                    <!-- Email Column with Filter -->
+                    <ace:column headerText="#{msg['label.email']}" sortBy="#{contact.email}"
+                               filterBy="#{contact.email}" filterMatchMode="contains">
                         <h:outputText value="#{contact.email}" styleClass="contact-email"
                             rendered="#{not empty contact.email}" />
                         <h:outputText value="-" styleClass="contact-email-empty" rendered="#{empty contact.email}" />
                     </ace:column>
 
                     <!-- Actions Column -->
-                    <ace:column headerText="#{msg['label.actions']}" sortable="false">
+                    <ace:column headerText="#{msg['label.actions']}" sortable="false" filterable="false">
                         <h:panelGroup styleClass="action-buttons">
                             <a href="edit-simple.xhtml?id=#{contact.id}&amp;name=#{contact.name}&amp;phone=#{contact.phoneNumber}&amp;email=#{contact.email}" 
                                class="button secondary" style="text-decoration: none; display: inline-block; padding: 8px 16px; background-color: #6c757d; color: white; border-radius: 4px; margin-right: 5px;">Edit</a>
