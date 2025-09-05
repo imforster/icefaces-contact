@@ -19,6 +19,13 @@
         </resource-bundle>
     </application>
 
+    <!-- Managed Bean Configuration -->
+    <managed-bean>
+        <managed-bean-name>contactBean</managed-bean-name>
+        <managed-bean-class>com.phonebook.bean.SimpleContactBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
     <!-- Navigation Rules -->
     <navigation-rule>
         <from-view-id>/contacts.xhtml</from-view-id>
