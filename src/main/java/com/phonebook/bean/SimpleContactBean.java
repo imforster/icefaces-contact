@@ -243,7 +243,44 @@ public class SimpleContactBean implements Serializable {
         }
     }
     
-    public void updateContact() {}
+    public void loadContactForEdit() {
+        try {
+            if (selectedContact != null && selectedContact.getId() != null) {
+                Contact contact = contactService.getContactById(selectedContact.getId());
+                if (contact != null) {
+                    selectedContact = contact;
+                } else {
+                    addMessage("Contact not found");
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.severe("Error loading contact for edit: " + e.getMessage());
+            addMessage("Error loading contact: " + e.getMessage());
+        }
+    }
+    
+    public String updateContact() {
+        try {
+            if (selectedContact.getName() == null || selectedContact.getName().trim().isEmpty()) {
+                addMessage("Name is required");
+                return null;
+            }
+            if (selectedContact.getPhoneNumber() == null || selectedContact.getPhoneNumber().trim().isEmpty()) {
+                addMessage("Phone number is required");
+                return null;
+            }
+            
+            contactService.updateContact(selectedContact);
+            addMessage("Contact updated successfully!");
+            
+            // Redirect to contacts page
+            return "contacts.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.severe("Error updating contact: " + e.getMessage());
+            addMessage("Error: " + e.getMessage());
+            return null;
+        }
+    }
     public void deleteContact() {}
     public void testMethod() {}
 }
