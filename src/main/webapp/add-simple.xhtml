@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <title>Add Contact</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
+        .form-container { max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .required { color: #dc3545; }
+        .back-link { margin-bottom: 20px; }
+        .back-link a { color: #007bff; text-decoration: none; }
+        .button-group { margin-top: 20px; }
+        .validation-message { color: #dc3545; font-size: 14px; margin-top: 5px; }
+        .ui-inputfield { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        .ui-button { padding: 10px 20px; margin-right: 10px; border-radius: 4px; font-size: 14px; }
+    </style>
+</h:head>
+<h:body>
+    <div class="form-container">
+        <div class="back-link">
+            <a href="contacts.xhtml">← Back to Contacts</a>
+        </div>
+        
+        <h2>Add New Contact</h2>
+        
+        <h:form id="addContactForm">
+            <div class="form-group">
+                <h:outputLabel for="nameInput" value="Name" styleClass="form-label">
+                    <span class="required">*</span>
+                </h:outputLabel>
+                <ace:textEntry id="nameInput" 
+                              value="#{contactBean.newContact.name}"
+                              required="true" 
+                              requiredMessage="Name is required"
+                              maxlength="50"
+                              placeholder="Enter contact name"
+                              styleClass="ui-inputfield" />
+                <ace:message for="nameInput" styleClass="validation-message" />
+            </div>
+            
+            <div class="form-group">
+                <h:outputLabel for="phoneInput" value="Phone Number" styleClass="form-label">
+                    <span class="required">*</span>
+                </h:outputLabel>
+                <ace:maskedEntry id="phoneInput"
+                                value="#{contactBean.newContact.phoneNumber}"
+                                mask="(999) 999-9999"
+                                placeholder="(___) ___-____"
+                                required="true"
+                                requiredMessage="Phone number is required"
+                                styleClass="ui-inputfield" />
+                <ace:message for="phoneInput" styleClass="validation-message" />
+            </div>
+            
+            <div class="form-group">
+                <h:outputLabel for="emailInput" value="Email" styleClass="form-label" />
+                <ace:textEntry id="emailInput"
+                              value="#{contactBean.newContact.email}"
+                              maxlength="100"
+                              placeholder="Enter email address (optional)"
+                              styleClass="ui-inputfield" />
+                <ace:message for="emailInput" styleClass="validation-message" />
+            </div>
+            
+            <div class="button-group">
+                <ace:pushButton id="addButton" 
+                               value="Add Contact" 
+                               action="#{contactBean.addContact}"
+                               styleClass="ui-button ui-button-primary">
+                    <ace:ajax execute="@form" render="@form" />
+                </ace:pushButton>
+                
+                <ace:pushButton id="cancelButton" 
+                               value="Cancel" 
+                               immediate="true"
+                               onclick="window.location.href='contacts.xhtml'; return false;"
+                               styleClass="ui-button ui-button-secondary" />
+            </div>
+        </h:form>
+    </div>
+</h:body>
+</html>

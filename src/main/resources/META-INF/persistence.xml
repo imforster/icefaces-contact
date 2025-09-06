@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="phonebook-pu" transaction-type="JTA">
+        <description>Phone Book Application Persistence Unit</description>
+        
+        <!-- JPA Provider (Hibernate is default in WildFly) -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <!-- JTA Data Source (will be configured in WildFly) -->
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        
+        <!-- Entity Classes -->
+        <class>com.phonebook.entity.Contact</class>
+        
+        <!-- Exclude unlisted classes to avoid scanning issues -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        
+        <properties>
+            <!-- Hibernate Dialect for H2 Database -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            
+            <!-- Schema Generation Strategy -->
+            <!-- Use 'update' for production deployment to preserve data -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            
+            <!-- Show SQL statements in logs for debugging (disable in production) -->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            
+            <!-- Enable second-level cache (optional) -->
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.cache.use_query_cache" value="false"/>
+            
+            <!-- Database Schema Validation -->
+            <property name="hibernate.validator.apply_to_ddl" value="true"/>
+            
+            <!-- Transaction Settings for WildFly -->
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
+            
+            <!-- Naming Strategy -->
+            <property name="hibernate.physical_naming_strategy" value="org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"/>
+            
+            <!-- WildFly specific settings -->
+            <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+            
+            <!-- Connection pool is managed by WildFly datasource -->
+            <property name="hibernate.connection.provider_disables_autocommit" value="true"/>
+            
+            <!-- Schema generation for first startup -->
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial-data.sql"/>
+        </properties>
+    </persistence-unit>
+</persistence>

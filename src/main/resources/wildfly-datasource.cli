@@ -1,0 +1,37 @@
+# WildFly CLI script to configure H2 datasource for Phonebook application
+# Run this script using: $WILDFLY_HOME/bin/jboss-cli.sh --connect --file=wildfly-datasource.cli
+
+# Start embedded server if not running
+embed-server --server-config=standalone.xml
+
+# Add H2 database driver module (if not already present)
+/subsystem=datasources/jdbc-driver=h2:add(driver-name=h2,driver-module-name=com.h2database.h2,driver-class-name=org.h2.Driver)
+
+# Add the datasource
+data-source add \
+    --name=PhonebookDS \
+    --jndi-name=java:jboss/datasources/PhonebookDS \
+    --driver-name=h2 \
+    --connection-url=jdbc:h2:~/phonebook;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS PUBLIC \
+    --user-name=sa \
+    --password= \
+    --min-pool-size=5 \
+    --max-pool-size=20 \
+    --pool-prefill=true \
+    --transaction-isolation=TRANSACTION_READ_COMMITTED \
+    --check-valid-connection-sql="SELECT 1" \
+    --validate-on-match=true \
+    --background-validation=false \
+    --use-ccm=true
+
+# Enable the datasource
+data-source enable --name=PhonebookDS
+
+# Test the connection
+/subsystem=datasources/data-source=PhonebookDS:test-connection-in-pool
+
+# Stop embedded server
+stop-embedded-server
+
+echo "Datasource configuration completed successfully!"
+echo "PhonebookDS is now available at java:jboss/datasources/PhonebookDS"

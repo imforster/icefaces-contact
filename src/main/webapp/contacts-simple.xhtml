@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>ICEfaces Phonebook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <h:outputStylesheet library="css" name="phonebook.css"/>
+</h:head>
+
+<h:body>
+    <f:view>
+        <div class="container">
+            <!-- Header Section -->
+            <div class="header">
+                <h1>ICEfaces Phonebook</h1>
+                <p>Manage your personal contacts with ease</p>
+            </div>
+
+            <!-- Messages Display -->
+            <h:messages id="messages" 
+                       globalOnly="true" 
+                       showDetail="true"
+                       showSummary="true"
+                       styleClass="messages"
+                       errorClass="message error"
+                       infoClass="message info"
+                       warnClass="message warning"
+                       fatalClass="message fatal"/>
+
+            <!-- Search and Add Contact Section -->
+            <h:form id="searchForm">
+                <div class="search-container">
+                    <h:panelGrid columns="3" styleClass="search-panel">
+                        <h:outputLabel for="searchInput" value="Search:" styleClass="search-label"/>
+                        <h:inputText id="searchInput" 
+                                    value="#{contactBean.searchTerm}"
+                                    styleClass="search-input">
+                            <f:ajax event="keyup" 
+                                   listener="#{contactBean.searchContacts}"
+                                   execute="@this"
+                                   render="contactsTable contactCount"/>
+                        </h:inputText>
+                        <h:panelGroup>
+                            <h:commandButton id="clearSearchBtn"
+                                           value="Clear"
+                                           actionListener="#{contactBean.clearSearch}"
+                                           styleClass="button secondary"
+                                           rendered="#{contactBean.searchActive}">
+                                <f:ajax execute="@this" render="searchInput contactsTable contactCount"/>
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </div>
+            </h:form>
+
+            <!-- Add Contact Button -->
+            <h:form id="addContactForm">
+                <div style="margin-bottom: 20px;">
+                    <h:commandButton id="addContactBtn"
+                                   value="Add Contact"
+                                   actionListener="#{contactBean.showAddContactForm}"
+                                   styleClass="button">
+                        <f:ajax execute="@this" render="@all"/>
+                    </h:commandButton>
+                    
+                    <!-- Contact Count Display -->
+                    <h:outputText id="contactCount" 
+                                 value="Showing #{contactBean.contactCount} contact(s)"
+                                 styleClass="contact-count"
+                                 style="margin-left: 20px; color: #666; font-style: italic;"/>
+                </div>
+            </h:form>
+
+            <!-- Contacts Data Table -->
+            <h:form id="contactsForm">
+                <h:dataTable id="contactsTable"
+                            value="#{contactBean.filteredContacts}"
+                            var="contact"
+                            styleClass="contacts-table"
+                            rowClasses="contact-row">
+                    
+                    <!-- Name Column -->
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{contact.name}" styleClass="contact-name"/>
+                    </h:column>
+                    
+                    <!-- Phone Number Column -->
+                    <h:column>
+                        <f:facet name="header">Phone</f:facet>
+                        <h:outputText value="#{contact.phoneNumber}" styleClass="contact-phone"/>
+                    </h:column>
+                    
+                    <!-- Email Column -->
+                    <h:column>
+                        <f:facet name="header">Email</f:facet>
+                        <h:outputText value="#{contact.email}" 
+                                     styleClass="contact-email"
+                                     rendered="#{not empty contact.email}"/>
+                        <h:outputText value="-" 
+                                     styleClass="contact-email-empty"
+                                     rendered="#{empty contact.email}"/>
+                    </h:column>
+                    
+                    <!-- Actions Column -->
+                    <h:column>
+                        <f:facet name="header">Actions</f:facet>
+                        <h:panelGroup styleClass="action-buttons">
+                            <h:commandButton value="Edit"
+                                           actionListener="#{contactBean.showEditContactForm(contact)}"
+                                           styleClass="button secondary"
+                                           style="margin-right: 5px;">
+                                <f:ajax execute="@this" render="@all"/>
+                            </h:commandButton>
+                            
+                            <h:commandButton value="Delete"
+                                           actionListener="#{contactBean.showDeleteConfirmation(contact)}"
+                                           styleClass="button danger">
+                                <f:ajax execute="@this" render="deleteConfirmDialog"/>
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+            <!-- Simple status message -->
+            <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
+                <h:outputText value="ICEfaces Phonebook Application - Successfully deployed on WildFly with Java 8!" 
+                             style="color: #2e7d32; font-weight: bold;"/>
+                <br/>
+                <h:outputText value="Database: H2 (#{contactBean.contactCount} contacts loaded)" 
+                             style="color: #666; font-size: 0.9em;"/>
+                <br/>
+                <h:outputText value="Framework: ICEfaces 4.3.0 + JSF 2.2" 
+                             style="color: #666; font-size: 0.9em;"/>
+            </div>
+
+        </div>
+    </f:view>
+</h:body>
+</html>

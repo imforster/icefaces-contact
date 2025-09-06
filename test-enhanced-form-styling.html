@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Form Styling Test</title>
+    <style>
+        /* Copy the enhanced form styles from our CSS */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-primary-light: #dbeafe;
+            --color-secondary: #64748b;
+            --color-secondary-hover: #475569;
+            --color-success: #10b981;
+            --color-success-hover: #059669;
+            --color-warning: #f59e0b;
+            --color-warning-hover: #d97706;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-background: #ffffff;
+            --color-surface: #f8fafc;
+            --color-border: #e2e8f0;
+            --color-text-primary: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-text-muted: #94a3b8;
+            --color-light-gray: #f1f5f9;
+            --color-medium-gray: #d1d5db;
+            --color-dark-gray: #374151;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --radius-xl: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 2.25rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --transition-fast: 150ms ease-in-out;
+            --transition-base: 200ms ease-in-out;
+            --transition-slow: 300ms ease-in-out;
+            --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            --focus-ring-danger: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            --focus-ring-success: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            margin: 0;
+            padding: var(--spacing-lg);
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--color-background);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
+        }
+
+        h1 {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            font-size: var(--font-size-sm);
+            line-height: 1.5;
+            letter-spacing: 0.025em;
+        }
+
+        .form-group label.required::after {
+            content: " *";
+            color: var(--color-danger);
+            font-weight: var(--font-weight-bold);
+            margin-left: 2px;
+        }
+
+        .form-input,
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-family: var(--font-family-base);
+            font-weight: var(--font-weight-normal);
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            letter-spacing: 0.025em;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus,
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            border-color: var(--color-primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1), var(--shadow-md);
+            background-color: var(--color-background);
+            transform: translateY(-1px);
+        }
+
+        .form-input:hover:not(:focus),
+        input[type="text"]:hover:not(:focus),
+        input[type="email"]:hover:not(:focus),
+        input[type="tel"]:hover:not(:focus) {
+            border-color: var(--color-secondary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-input::placeholder,
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="tel"]::placeholder {
+            color: var(--color-text-muted);
+            opacity: 1;
+            font-style: italic;
+            font-weight: var(--font-weight-normal);
+        }
+
+        .form-input.error,
+        input.error {
+            border-color: var(--color-danger);
+            background-color: rgba(239, 68, 68, 0.05);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1), var(--shadow-sm);
+        }
+
+        .form-input.error:focus,
+        input.error:focus {
+            border-color: var(--color-danger);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2), var(--shadow-md);
+            background-color: rgba(239, 68, 68, 0.05);
+        }
+
+        .validation-message {
+            display: block;
+            color: var(--color-danger);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.4;
+            letter-spacing: 0.025em;
+            margin-top: var(--spacing-xs);
+            padding: var(--spacing-xs) 0;
+        }
+
+        .validation-message::before {
+            content: "⚠ ";
+            font-style: normal;
+            margin-right: 2px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            margin: var(--spacing-xs);
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+            letter-spacing: 0.025em;
+            transition: all var(--transition-base);
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .button:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .test-section {
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background-color: var(--color-surface);
+        }
+
+        .test-section h2 {
+            margin-top: 0;
+            color: var(--color-text-primary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced Form Styling Test</h1>
+        
+        <div class="test-section">
+            <h2>Normal Form Inputs</h2>
+            <div class="form-group">
+                <label for="name" class="required">Name</label>
+                <input type="text" id="name" placeholder="Enter your name" />
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email address" />
+            </div>
+            
+            <div class="form-group">
+                <label for="phone" class="required">Phone</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" />
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Error State Inputs</h2>
+            <div class="form-group">
+                <label for="error-name" class="required">Name (with error)</label>
+                <input type="text" id="error-name" class="error" value="Invalid name" />
+                <span class="validation-message">Name is required and must be at least 2 characters long</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="error-email">Email (with error)</label>
+                <input type="email" id="error-email" class="error" value="invalid-email" />
+                <span class="validation-message">Please enter a valid email address</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Interactive Test</h2>
+            <p>Try interacting with these inputs to see the enhanced focus states, hover effects, and transitions:</p>
+            
+            <div class="form-group">
+                <label for="interactive-input" class="required">Interactive Input</label>
+                <input type="text" id="interactive-input" placeholder="Click here and type something..." />
+            </div>
+            
+            <button class="button" onclick="toggleError()">Toggle Error State</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleError() {
+            const input = document.getElementById('interactive-input');
+            const formGroup = input.parentElement;
+            
+            if (input.classList.contains('error')) {
+                input.classList.remove('error');
+                const errorMsg = formGroup.querySelector('.validation-message');
+                if (errorMsg) errorMsg.remove();
+            } else {
+                input.classList.add('error');
+                const errorMsg = document.createElement('span');
+                errorMsg.className = 'validation-message';
+                errorMsg.textContent = 'This field has an error for testing purposes';
+                formGroup.appendChild(errorMsg);
+            }
+        }
+    </script>
+</body>
+</html>

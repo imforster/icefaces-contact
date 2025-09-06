@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-facesconfig_2_2.xsd"
+              version="2.2">
+
+    <!-- Application Configuration -->
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        
+        <!-- Message bundle configuration -->
+        <resource-bundle>
+            <base-name>messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+    </application>
+
+    <!-- Managed Bean Configuration -->
+    <managed-bean>
+        <managed-bean-name>contactBean</managed-bean-name>
+        <managed-bean-class>com.phonebook.bean.SimpleContactBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <!-- Navigation Rules -->
+    <navigation-rule>
+        <from-view-id>/contacts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>contacts</from-outcome>
+            <to-view-id>/contacts.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Global navigation case for home -->
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/contacts.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+</faces-config>

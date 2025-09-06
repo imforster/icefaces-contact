@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "uvx",
+      "args": ["mcp-playwright"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["mcp_playwright_navigate", "mcp_playwright_click", "mcp_playwright_type", "mcp_playwright_get_text", "mcp_playwright_take_screenshot", "mcp_playwright_new_page"]
+    }
+  }
+}

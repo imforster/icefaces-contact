@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icefaces.org/icefaces/core">
+
+<h:head>
+    <title>#{msg['contacts.title']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <h:outputStylesheet library="css" name="phonebook.css" />
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/xmlhttp/css/rime/rime.css" />
+</h:head>
+
+<h:body>
+    <f:view>
+        <div class="container">
+            <!-- Header Section -->
+            <div class="header">
+                <h1>#{msg['contacts.title']}</h1>
+                <p>Manage your personal contacts with ease</p>
+            </div>
+
+            <!-- Messages Display -->
+            <ace:messages id="messages" globalOnly="true" showDetail="true" showSummary="true" autoUpdate="true"
+                escape="false" />
+
+            <!-- Enhanced fallback messages for non-AJAX scenarios -->
+            <h:messages id="fallbackMessages" globalOnly="true" showDetail="true" showSummary="true"
+                styleClass="messages" errorClass="message error" infoClass="message info" warnClass="message warning"
+                fatalClass="message fatal"
+                rendered="#{facesContext.maximumSeverity != null and not facesContext.partialViewContext.ajaxRequest}" />
+
+            <!-- Field-specific validation messages -->
+            <h:messages id="fieldMessages" globalOnly="false" showDetail="true" showSummary="false"
+                styleClass="field-messages" errorClass="field-message error" warnClass="field-message warning"
+                rendered="#{facesContext.maximumSeverity != null and not facesContext.partialViewContext.ajaxRequest}" />
+
+            <!-- Search and Add Contact Section -->
+            <h:form id="searchForm">
+                <div class="search-container">
+                    <h:panelGrid columns="3" styleClass="search-panel">
+                        <h:outputLabel for="searchInput" value="#{msg['label.search']}:" styleClass="search-label" />
+                        <ace:textEntry id="searchInput" value="#{contactBean.searchTerm}"
+                            placeholder="Enter name to search..." styleClass="search-input">
+                            <ace:ajax event="valueChange" listener="#{contactBean.searchContacts}" execute="@this"
+                                render="contactsForm:contactsTable addContactForm:contactCount searchForm:clearSearchBtn" />
+                        </ace:textEntry>
+                        <h:panelGroup>
+                            <ace:pushButton id="clearSearchBtn" value="#{msg['button.clear']}"
+                                actionListener="#{contactBean.clearSearch}" styleClass="button secondary"
+                                rendered="#{contactBean.searchActive}">
+                                <ace:ajax execute="@this"
+                                    render="searchInput contactsForm:contactsTable addContactForm:contactCount" />
+                            </ace:pushButton>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </div>
+            </h:form>
+
+            <!-- Add Contact Button -->
+            <h:form id="addContactForm">
+                <div style="margin-bottom: 20px;">
+                    <a href="add-simple.xhtml" class="button" style="text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; border-radius: 4px;">Add Contact</a>
+
+                    <!-- Contact Count Display -->
+                    <h:outputText id="contactCount" value="Showing #{contactBean.contactCount} contact(s)"
+                        styleClass="contact-count" style="margin-left: 20px; color: #666; font-style: italic;" />
+                </div>
+            </h:form>
+
+            <!-- Contacts Data Table -->
+            <h:form id="contactsForm">
+                <ace:dataTable id="contactsTable" value="#{contactBean.filteredContacts}" var="contact" rows="10"
+                    paginator="true" paginatorPosition="bottom"
+                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                    rowsPerPageTemplate="5,10,15,20,25"
+                    currentPageReportTemplate="Showing {startRecord} to {endRecord} of {totalRecords} contacts"
+                    emptyMessage="#{contactBean.searchActive ? msg['message.no.matches'] : msg['message.no.contacts']}"
+                    styleClass="contacts-table" rowStyleClass="contact-row"
+                    filterable="true">
+
+                    <!-- Name Column with Filter -->
+                    <ace:column headerText="#{msg['label.name']}" sortBy="#{contact.name}" 
+                               filterBy="#{contact.name}" filterMatchMode="contains">
+                        <h:outputText value="#{contact.name}" styleClass="contact-name" />
+                    </ace:column>
+
+                    <!-- Phone Number Column with Filter -->
+                    <ace:column headerText="#{msg['label.phone']}" sortBy="#{contact.phoneNumber}"
+                               filterBy="#{contact.phoneNumber}" filterMatchMode="contains">
+                        <h:outputText value="#{contact.phoneNumber}" styleClass="contact-phone" />
+                    </ace:column>
+
+                    <!-- Email Column with Filter -->
+                    <ace:column headerText="#{msg['label.email']}" sortBy="#{contact.email}"
+                               filterBy="#{contact.email}" filterMatchMode="contains">
+                        <h:outputText value="#{contact.email}" styleClass="contact-email"
+                            rendered="#{not empty contact.email}" />
+                        <h:outputText value="-" styleClass="contact-email-empty" rendered="#{empty contact.email}" />
+                    </ace:column>
+
+                    <!-- Actions Column -->
+                    <ace:column headerText="#{msg['label.actions']}" sortable="false" filterable="false">
+                        <h:panelGroup styleClass="action-buttons">
+                            <a href="edit-simple.xhtml?id=#{contact.id}&amp;name=#{contact.name}&amp;phone=#{contact.phoneNumber}&amp;email=#{contact.email}" 
+                               class="button secondary" style="text-decoration: none; display: inline-block; padding: 8px 16px; background-color: #6c757d; color: white; border-radius: 4px; margin-right: 5px;">Edit</a>
+
+                            <a href="contacts.xhtml?action=delete&amp;id=#{contact.id}" 
+                               onclick="return confirm('Are you sure you want to delete #{contact.name}?')"
+                               class="button danger" style="text-decoration: none; display: inline-block; padding: 8px 16px; background-color: #dc3545; color: white; border-radius: 4px;">Delete</a>
+                        </h:panelGroup>
+                    </ace:column>
+                </ace:dataTable>
+            </h:form>
+
+            <!-- Add Contact Form (Outside Dialog) -->
+            <h:form id="addForm" rendered="#{contactBean.showAddForm}">
+                <div
+                    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                    <div
+                        style="background: white; padding: 20px; border-radius: 8px; width: 400px; max-height: 80vh; overflow-y: auto;">
+                        <h3 style="margin-top: 0;">Add New Contact</h3>
+
+                        <h:panelGrid columns="2" styleClass="form-grid">
+                            <h:outputLabel for="addName" value="#{msg['label.name']}:" styleClass="required" />
+                            <h:panelGroup>
+                                <ace:textEntry id="addName" value="#{contactBean.newContact.name}"
+                                    maxlength="50" styleClass="form-input" placeholder="Enter contact name">
+                                </ace:textEntry>
+                                <h:message for="addName" styleClass="validation-message" />
+                            </h:panelGroup>
+
+                            <h:outputLabel for="addPhone" value="#{msg['label.phone']}:" styleClass="required" />
+                            <h:panelGroup>
+                                <ace:textEntry id="addPhone" value="#{contactBean.newContact.phoneNumber}"
+                                    maxlength="20" styleClass="form-input" placeholder="Enter phone number">
+                                </ace:textEntry>
+                                <h:message for="addPhone" styleClass="validation-message" />
+                            </h:panelGroup>
+
+                            <h:outputLabel for="addEmail" value="#{msg['label.email']}:" />
+                            <h:panelGroup>
+                                <ace:textEntry id="addEmail" value="#{contactBean.newContact.email}" maxlength="100"
+                                    styleClass="form-input" placeholder="Enter email address (optional)">
+                                </ace:textEntry>
+                                <h:message for="addEmail" styleClass="validation-message" />
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <div class="dialog-buttons" style="margin-top: 20px; text-align: right;">
+                            <h:commandButton value="#{msg['button.save']}" actionListener="#{contactBean.addContact}"
+                                styleClass="button success">
+                                <f:ajax execute="@form" render=":messages :contactsForm:contactsTable :addContactForm:contactCount addForm" />
+                            </h:commandButton>
+
+                            <h:commandButton value="#{msg['button.cancel']}" action="#{contactBean.hideAddContactForm}"
+                                styleClass="button secondary" immediate="true">
+                                <f:ajax execute="@this" render="addForm" />
+                            </h:commandButton>
+                            
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <!-- Edit Contact Form (Outside Dialog) -->
+            <h:form id="editForm" rendered="#{contactBean.showEditForm}">
+                <div
+                    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                    <div
+                        style="background: white; padding: 20px; border-radius: 8px; width: 400px; max-height: 80vh; overflow-y: auto;">
+                        <h3 style="margin-top: 0;">Edit Contact</h3>
+
+                        <h:panelGrid columns="2" styleClass="form-grid">
+                            <h:outputLabel for="editName" value="#{msg['label.name']}:" styleClass="required" />
+                            <h:panelGroup>
+                                <ace:textEntry id="editName" value="#{contactBean.selectedContact.name}"
+                                    styleClass="form-input" placeholder="Enter contact name">
+                                </ace:textEntry>
+                                <h:message for="editName" styleClass="validation-message" />
+                            </h:panelGroup>
+
+                            <h:outputLabel for="editPhone" value="#{msg['label.phone']}:" styleClass="required" />
+                            <h:panelGroup>
+                                <ace:textEntry id="editPhone" value="#{contactBean.selectedContact.phoneNumber}"
+                                    styleClass="form-input" placeholder="Enter phone number">
+                                </ace:textEntry>
+                                <h:message for="editPhone" styleClass="validation-message" />
+                            </h:panelGroup>
+
+                            <h:outputLabel for="editEmail" value="#{msg['label.email']}:" />
+                            <h:panelGroup>
+                                <ace:textEntry id="editEmail" value="#{contactBean.selectedContact.email}"
+                                    maxlength="100" styleClass="form-input"
+                                    placeholder="Enter email address (optional)">
+                                </ace:textEntry>
+                                <h:message for="editEmail" styleClass="validation-message" />
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <div class="dialog-buttons" style="margin-top: 20px; text-align: right;">
+                            <h:commandButton value="#{msg['button.save']}" action="#{contactBean.updateContact}"
+                                styleClass="button success">
+                                <f:ajax execute="@form" render=":messages :contactsForm:contactsTable :addContactForm:contactCount editForm" />
+                            </h:commandButton>
+
+                            <h:commandButton value="#{msg['button.cancel']}" action="#{contactBean.hideEditContactForm}"
+                                styleClass="button secondary" immediate="true">
+                                <f:ajax execute="@this" render="editForm" />
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <!-- Delete Confirmation Dialog -->
+            <ace:confirmationDialog id="deleteConfirmDialog" header="Confirm Delete"
+                visible="#{contactBean.showDeleteConfirmation}" modal="true" closable="true" width="400" height="200"
+                message="#{msg['message.confirm.delete']}" severity="warn">
+                <h:form id="deleteForm">
+                    <div class="dialog-content" style="text-align: center;">
+                        <h:outputText value="Contact: #{contactBean.selectedContact.name}"
+                            style="font-weight: bold; display: block; margin-bottom: 15px;" />
+
+                        <div class="dialog-buttons">
+                            <h:commandButton value="Yes, Delete" action="#{contactBean.deleteContact}"
+                                styleClass="button danger">
+                                <f:ajax execute="@this"
+                                    render=":messages :contactsForm:contactsTable :addContactForm:contactCount deleteConfirmDialog" />
+                            </h:commandButton>
+
+                            <h:commandButton value="Cancel" action="#{contactBean.hideDeleteConfirmation}"
+                                styleClass="button secondary" immediate="true" style="margin-left: 10px;">
+                                <f:ajax execute="@this" render="deleteConfirmDialog" />
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+            </ace:confirmationDialog>
+
+        </div>
+    </f:view>
+</h:body>
+
+</html>
